@@ -13,6 +13,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['"Bebas Neue"', 'sans-serif'],
+        editorial: ['"Cormorant Garamond"', 'serif'],
+        mono: ['"DM Mono"', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -57,6 +62,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        axt: {
+          void: '#06060A',
+          obsidian: '#111118',
+          carbon: '#1E1E28',
+          gold: '#B8943E',
+          'gold-bright': '#D4AA55',
+          ivory: '#F0ECE3',
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,20 +78,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
