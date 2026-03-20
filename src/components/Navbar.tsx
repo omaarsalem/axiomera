@@ -2,8 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 const navItems = [
-  { label: "Home", path: "/" },
   { label: "Services", path: "/services" },
+  { label: "About", path: "/#about" },
   { label: "Fellowship", path: "/fellowship" },
   { label: "Contact", path: "/contact" },
 ];
@@ -42,6 +42,9 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
+          <Link to="/contact" className="btn-axt btn-axt-gold !py-3 !px-8">
+            Brief Us
+          </Link>
         </div>
 
         {/* Mobile toggle */}
@@ -73,6 +76,13 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
+          <Link
+            to="/contact"
+            onClick={() => setMobileOpen(false)}
+            className="btn-axt btn-axt-gold text-center mt-2"
+          >
+            Brief Us
+          </Link>
         </div>
       )}
     </nav>

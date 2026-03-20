@@ -7,24 +7,44 @@ const Footer = () => (
         {/* Brand */}
         <div className="md:col-span-2">
           <span className="font-display text-3xl tracking-wider" style={{ color: 'var(--axt-gold)' }}>AXT</span>
-          <p className="font-editorial text-lg mt-4" style={{ color: 'var(--axt-text-dim)' }}>
-            Precision-built infrastructure.<br />Institutional-grade security.
+          <p className="font-editorial text-lg mt-4 italic" style={{ color: 'var(--axt-text-dim)', fontFamily: "'Cormorant Garamond', serif" }}>
+            "Built to be your only call."
+          </p>
+          <p className="font-mono text-xs mt-4 leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>
+            Axiomera Technologies — IT Infrastructure, Cybersecurity, and Governance. Cairo-based, UK-educated, internationally minded.
           </p>
         </div>
 
-        {/* Navigation */}
+        {/* Services */}
         <div>
           <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
-            Navigation
+            Services
           </span>
           {[
-            { label: "Home", path: "/" },
-            { label: "Services", path: "/services" },
+            { label: "AXT Infrastructure", path: "/services" },
+            { label: "AXT Cyber", path: "/services" },
+            { label: "AXT Governance", path: "/services" },
+          ].map((item) => (
+            <Link
+              key={item.label}
+              to={item.path}
+              className="block font-mono text-xs mb-2 transition-colors hover:text-axt-gold"
+              style={{ color: 'var(--axt-text-dim)' }}
+            >
+              {item.label}
+            </Link>
+          ))}
+
+          <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4 mt-8" style={{ color: 'var(--axt-gold)' }}>
+            Company
+          </span>
+          {[
+            { label: "About AXT", path: "/#about" },
             { label: "Fellowship", path: "/fellowship" },
             { label: "Contact", path: "/contact" },
           ].map((item) => (
             <Link
-              key={item.path}
+              key={item.label}
               to={item.path}
               className="block font-mono text-xs mb-2 transition-colors hover:text-axt-gold"
               style={{ color: 'var(--axt-text-dim)' }}
@@ -34,12 +54,12 @@ const Footer = () => (
           ))}
         </div>
 
-        {/* Offices */}
+        {/* Markets */}
         <div>
           <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
-            Offices
+            Markets
           </span>
-          {["Cairo, Egypt", "Leeds, United Kingdom", "London, United Kingdom"].map((loc) => (
+          {["Cairo, Egypt", "Leeds, UK"].map((loc) => (
             <p key={loc} className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>
               {loc}
             </p>
@@ -51,10 +71,10 @@ const Footer = () => (
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <p className="font-mono text-[10px]" style={{ color: 'var(--axt-text-faint)' }}>
-          © {new Date().getFullYear()} Axiomera Technologies Ltd. All rights reserved.
+          © {new Date().getFullYear()} Axiomera Technologies · All Rights Reserved
         </p>
-        <p className="font-mono text-[10px]" style={{ color: 'var(--axt-text-faint)' }}>
-          AXT-REF-2026
+        <p className="font-mono text-[10px] italic" style={{ color: 'var(--axt-text-faint)', fontFamily: "'Cormorant Garamond', serif" }}>
+          "Where decisions end."
         </p>
       </div>
     </div>
