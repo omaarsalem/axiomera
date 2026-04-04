@@ -63,9 +63,9 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         axt: {
-          void: '#06060A',
-          obsidian: '#111118',
-          carbon: '#1E1E28',
+          void: '#030305',
+          obsidian: '#08080E',
+          carbon: '#0E0E16',
           gold: '#B8943E',
           'gold-bright': '#D4AA55',
           ivory: '#F0ECE3',

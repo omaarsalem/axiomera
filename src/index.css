@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    --background: 240 25% 3%;
-    --background-secondary: 240 18% 8%;
-    --background-tertiary: 240 14% 14%;
+    --background: 240 30% 1.5%;
+    --background-secondary: 240 22% 4%;
+    --background-tertiary: 240 18% 8%;
     --foreground: 38 30% 92%;
 
     --card: 240 18% 8%;
@@ -48,9 +48,9 @@
     --sidebar-ring: 40 51% 48%;
 
     /* AXT custom tokens */
-    --axt-void: #06060A;
-    --axt-obsidian: #111118;
-    --axt-carbon: #1E1E28;
+    --axt-void: #030305;
+    --axt-obsidian: #08080E;
+    --axt-carbon: #0E0E16;
     --axt-gold: #B8943E;
     --axt-gold-bright: #D4AA55;
     --axt-ivory: #F0ECE3;
