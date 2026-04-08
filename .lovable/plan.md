@@ -1,113 +1,96 @@
 
 
-## AXT Fellowship Learning Hub
+## Full Project Review — Improvements & Enhancements
 
-### Summary
-Build a password-protected "Member Hub" at `/hub` using Supabase Auth (email/password). After login, fellows see a dashboard with learning path cards. Starting with Hanna's Learning Path, organized into phases with all the courses you provided.
+After reviewing every page and component, here are the issues and improvements organized by priority.
 
-### Architecture
+---
 
-```text
-/hub (login gate)
-  ├── Not authenticated → Login form (email + password)
-  └── Authenticated → Member Hub Dashboard
-        ├── Welcome header with fellow's name
-        └── Learning Path cards
-              └── "Hanna's Learning Path" → /hub/hanna
-                    ├── Hero: "Your Journey Starts Here, Hanna."
-                    ├── Stats: 8 Phases · 24+ Courses · 8 Months · £0
-                    ├── Phase 1: How to Learn + English Foundations (4 courses)
-                    ├── Phase 2: Digital Foundations — Excel + ICDL (3 courses)
-                    ├── Phase 3: Business Fundamentals (3 courses)
-                    ├── Phase 4: Digital Marketing Core (3 courses)
-                    ├── Phase 5: Advanced Marketing + AI (3 courses)
-                    ├── Phase 6: Communication + Leadership (4 courses)
-                    ├── Phase 7: Professional English (2 courses)
-                    └── Phase 8: Certification + Capstone (2 courses)
-```
+### 1. Critical Fixes
 
-### Steps
+**A. 404 Page doesn't match AXT design system**
+The NotFound page uses default Tailwind classes (`bg-muted`, `text-muted-foreground`) instead of AXT branding. It should use `Layout`, Bebas Neue headings, Void background, gold accents, and a ghost button back to home.
 
-1. **Enable Lovable Cloud** — set up Supabase for auth. No profiles table needed initially; we just need email/password login.
+**B. Contact form doesn't actually send data**
+`handleSubmit` just sets `submitted = true` — no data is stored or emailed. Wire it to a database table so enquiries are saved and you can view them.
 
-2. **Create auth context and login page** (`src/pages/Hub.tsx`)
-   - Login form styled in the AXT design system (Void background, gold accents, DM Mono, zero border-radius)
-   - Email + password fields, gold "Access Hub" button
-   - On success, show the hub dashboard
-   - Logout button in hub header
+**C. About anchor (`/#about`) doesn't smooth-scroll**
+Clicking "About" in the nav navigates but doesn't scroll to the `#about` section when already on the home page. Need scroll-to-hash logic.
 
-3. **Build the Hub Dashboard** (authenticated view in `Hub.tsx`)
-   - SectionLabel "AXT Fellowship · Member Hub"
-   - Welcome message
-   - Grid of learning path cards (starting with one: Hanna's Learning Path)
-   - Each card shows: name, phase count, course count, duration, cost
-   - Cards link to individual path pages
+**D. `useReveal` hook is duplicated / inconsistent**
+The `useReveal` hook is defined inline in `Index.tsx` but other pages (Services, Fellowship, HannaPath) use bare `reveal` CSS classes without the intersection observer — meaning their animations fire immediately on load instead of on scroll.
 
-4. **Create Hanna's Learning Path page** (`src/pages/HannaPath.tsx` at `/hub/hanna`)
-   - Protected route (redirects to /hub if not authenticated)
-   - Hero section with personalized intro
-   - Stats bar: 8 Phases, 24+ Courses, 8 Months, £0
-   - Phase sections (1-8), each with:
-     - Phase number and title
-     - Phase goal description
-     - Course cards with: platform badge, course title, description, "FREE" link button opening in new tab
-   - All courses from your message organized by phase, matching the PDF structure
+---
 
-5. **Add route to App.tsx** — `/hub` and `/hub/hanna`, both wrapped with auth check
+### 2. UX & Navigation Enhancements
 
-6. **Create the first user account** — You'll need to manually create Hanna's account in Supabase Auth (or I can add a note about how to do this via the Supabase dashboard).
+**E. No "Hub" link in navbar for authenticated users**
+After login, fellows have no way to reach `/hub` from the navbar. Add a conditional "Hub" link (or user icon) that appears when authenticated.
 
-### Course Organization (from your data)
+**F. Mobile menu doesn't close on navigation**
+The mobile menu closes on click, but the `/#about` hash link won't trigger a route change — menu stays open.
 
-**Phase 1 — How to Learn + English Foundations** (Months 1-2)
-- Coursera: Learning How to Learn
-- FutureLearn: Basic English 1 (Elementary)
-- FutureLearn: Basic English 2 (Pre-Intermediate)
-- OpenLearn: Everyday English 1
+**G. Footer missing London market**
+Footer lists Cairo and Leeds but omits London.
 
-**Phase 2 — Digital Foundations** (Months 2-3)
-- Edraak: ICDL Base
-- Edraak: Mastering Excel
-- Santander: Excel – From Basics to Intermediate
+**H. Back button in HannaPath uses `<a>` instead of `<Link>`**
+Line 235 of HannaPath uses `<a href="/hub">` which causes a full page reload. Should use React Router `<Link>`.
 
-**Phase 3 — Business Fundamentals** (Months 3-4)
-- Edraak: Accounting Essentials for Non-Accountants
-- Edraak: Agile Project Management
-- edX (AdelaideX): Introduction to Project Management
+---
 
-**Phase 4 — Digital Marketing Core** (Months 4-5)
-- HubSpot: Social Media Marketing Certification
-- HubSpot: Digital Marketing Certification
-- HubSpot: Content Marketing Certification
-- Simplilearn: Digital Marketing Strategy
+### 3. Design Polish
 
-**Phase 5 — Advanced Marketing + AI** (Months 5-6)
-- Simplilearn: ChatGPT for Digital Marketing
-- Simplilearn: Introduction to Content Marketing
-- Semrush: Become an AI-Powered Marketer
-- Santander: Digital Marketing
-- Santander: Digital Advertising: Data, AI and Legal Compliance
+**I. Services page has no scroll-reveal animations**
+Cards appear statically. Should use the same `useReveal` intersection observer pattern as the homepage.
 
-**Phase 6 — Communication + Leadership** (Months 6-7)
-- Santander: Effective Communication
-- Santander: Critical Thinking & Problem Solving
-- Santander: Strategic Communication & Teamwork
-- Santander: Leadership
-- Edraak: Introduction to Entrepreneurship
+**J. Fellowship page has no scroll-reveal animations**
+Same issue — sections appear without animation.
 
-**Phase 7 — Professional English** (Month 7)
-- Santander: Elevating Your English: Crafting Engaging Presentations
-- Santander: Elevating Your English: Communicating as a Leader
-- edX (BerkeleyX): How to Write an Essay
+**K. Why AXT cards have no hover effect**
+Homepage "Why AXT" cards have no hover state. Add the same `onMouseEnter`/`onMouseLeave` gold-subtle background transition used on the Hub dashboard cards.
 
-**Phase 8 — Certification + Professional Portfolio** (Month 8)
-- Santander: Excel – Intermediate to Advanced
-- Santander: Project Management & Agile Fundamentals
-- Meta: 100-101 Certified Digital Marketing Associate
+**L. Contact form inputs don't have visible focus states**
+`focus:border-axt-gold` won't work because `axt-gold` isn't defined in Tailwind config as a color — it's a CSS variable. Fix focus styles.
 
-### Design Notes
-- All pages use the AXT design system: Void/Obsidian/Carbon backgrounds, gold accents, DM Mono body, Bebas Neue headings, zero border-radius, grain overlay
-- Course cards show platform as a 9px gold label, course title in Bebas Neue, description in DM Mono, with a ghost button linking out
-- Phase sections alternate between Void and Obsidian backgrounds
-- Login page is minimal and institutional — centered form, AXT branding above
+---
+
+### 4. Technical Debt
+
+**M. Extract `useReveal` to a shared hook**
+Move from `Index.tsx` to `src/hooks/useReveal.ts` and use consistently across all pages.
+
+**N. Inline styles everywhere**
+Many components use `style={{ color: 'var(--axt-gold)' }}` repeatedly. Create Tailwind utility classes (e.g., `text-axt-gold`, `bg-axt-void`) mapped to CSS variables in `tailwind.config.ts` for cleaner code.
+
+**O. `font-editorial` class defined in CSS but used inconsistently**
+Some places use `className="font-editorial"`, others use inline `style={{ fontFamily: "'Cormorant Garamond', serif" }}`. Standardize.
+
+---
+
+### 5. Content & SEO
+
+**P. Missing favicon**
+No favicon is set in `index.html`.
+
+**Q. Missing `<meta>` keywords and structured data**
+Add relevant meta tags for IT/cybersecurity consulting SEO.
+
+---
+
+### Implementation Plan (prioritized)
+
+| Step | What | Files |
+|------|------|-------|
+| 1 | Extract `useReveal` to shared hook | `src/hooks/useReveal.ts`, update all pages |
+| 2 | Add Tailwind color utilities for AXT tokens | `tailwind.config.ts` |
+| 3 | Restyle 404 page to AXT design | `src/pages/NotFound.tsx` |
+| 4 | Add scroll-reveal to Services + Fellowship | `Services.tsx`, `Fellowship.tsx` |
+| 5 | Fix About anchor smooth scroll | `src/components/Navbar.tsx` |
+| 6 | Add "Hub" nav link for authenticated users | `Navbar.tsx` |
+| 7 | Fix Footer (add London) | `Footer.tsx` |
+| 8 | Fix HannaPath `<a>` → `<Link>` | `HannaPath.tsx` |
+| 9 | Add hover effects to Why AXT cards | `Index.tsx` |
+| 10 | Fix contact form focus styles | `Contact.tsx` |
+| 11 | Wire contact form to database | Migration + `Contact.tsx` |
+| 12 | Standardize `font-editorial` usage | Multiple files |
 
