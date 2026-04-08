@@ -1,8 +1,9 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
 import { ExternalLink } from "lucide-react";
+import useReveal from "@/hooks/useReveal";
 
 interface Course {
   platform: string;

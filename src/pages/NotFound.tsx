@@ -1,5 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Layout from "@/components/Layout";
 
 const NotFound = () => {
   const location = useLocation();
@@ -9,15 +11,30 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
-      </div>
-    </div>
+    <Layout>
+      <section
+        className="min-h-[80vh] flex items-center justify-center px-6 md:px-12"
+        style={{ background: 'var(--axt-void)' }}
+      >
+        <div className="text-center">
+          <span
+            className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-6"
+            style={{ color: 'var(--axt-gold)' }}
+          >
+            Error
+          </span>
+          <h1 className="font-display text-8xl md:text-[12rem] leading-none mb-4" style={{ color: 'var(--axt-gold)' }}>
+            404
+          </h1>
+          <p className="font-mono text-sm mb-8" style={{ color: 'var(--axt-text-dim)' }}>
+            This route does not exist.
+          </p>
+          <Link to="/" className="btn-axt btn-axt-ghost">
+            Return to Home
+          </Link>
+        </div>
+      </section>
+    </Layout>
   );
 };
 
