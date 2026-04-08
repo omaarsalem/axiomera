@@ -171,6 +171,7 @@ const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
 
 const HannaPath = () => {
   const { session, loading } = useAuth();
+  const heroRef = useReveal();
 
   if (loading) {
     return (
@@ -189,11 +190,13 @@ const HannaPath = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="px-6 md:px-12 pt-24 pb-16 md:pt-32 md:pb-24" style={{ background: 'var(--axt-void)' }}>
+      <section ref={heroRef} className="px-6 md:px-12 pt-24 pb-16 md:pt-32 md:pb-24" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
-          <SectionLabel number="01" label="AXT Fellowship · Learning Path" />
+          <div className="reveal-target">
+            <SectionLabel number="01" label="AXT Fellowship · Learning Path" />
+          </div>
 
-          <div className="reveal">
+          <div className="reveal-target">
             <h1 className="font-display text-6xl md:text-8xl tracking-wider mb-6" style={{ color: 'var(--axt-ivory)' }}>
               Your Journey Starts Here,{" "}
               <span style={{ color: 'var(--axt-gold-bright)' }}>Hanna</span>.
@@ -205,7 +208,7 @@ const HannaPath = () => {
 
           {/* Stats Bar */}
           <div
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-[2px] reveal reveal-delay-2"
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-[2px] reveal-target"
             style={{ background: 'var(--axt-ghost-border)' }}
           >
             {[
