@@ -118,8 +118,15 @@
   }
 }
 
-.reveal {
+/* Elements waiting to be revealed by intersection observer */
+.reveal-target {
   opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Triggered state */
+.reveal-target.reveal,
+.reveal {
   animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -129,7 +136,12 @@
 .reveal-delay-4 { animation-delay: 0.4s; }
 .reveal-delay-5 { animation-delay: 0.5s; }
 
-/* Editorial italic */
+/* Editorial italic — use className="font-editorial" */
+.font-editorial {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+
 .editorial {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
