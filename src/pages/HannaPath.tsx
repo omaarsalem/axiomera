@@ -141,11 +141,12 @@ const CourseCard = ({ course }: { course: Course }) => (
 
 const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
   const bgColor = index % 2 === 0 ? 'var(--axt-void)' : 'var(--axt-obsidian)';
+  const sectionRef = useReveal();
 
   return (
-    <section className="px-6 md:px-12 py-20 md:py-28" style={{ background: bgColor }}>
+    <section ref={sectionRef} className="px-6 md:px-12 py-20 md:py-28" style={{ background: bgColor }}>
       <div className="max-w-[1400px] mx-auto">
-        <div className="mb-12 reveal">
+        <div className="mb-12 reveal-target">
           <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
             Phase {phase.number} · {phase.months}
           </span>
@@ -157,7 +158,7 @@ const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal reveal-delay-2"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal-target"
           style={{ background: 'var(--axt-ghost-border)' }}>
           {phase.courses.map((course, i) => (
             <CourseCard key={i} course={course} />
@@ -233,9 +234,9 @@ const HannaPath = () => {
 
       {/* Back to Hub */}
       <section className="px-6 md:px-12 py-20 text-center" style={{ background: 'var(--axt-void)' }}>
-        <a href="/hub" className="btn-axt btn-axt-ghost">
+        <Link to="/hub" className="btn-axt btn-axt-ghost">
           ← Back to Hub
-        </a>
+        </Link>
       </section>
     </Layout>
   );
