@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
+import useReveal from "@/hooks/useReveal";
 
 const allServices = [
   {
@@ -32,68 +33,79 @@ const allServices = [
   },
 ];
 
-const Services = () => (
-  <Layout>
-    {/* Hero */}
-    <section className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
-      <div className="max-w-[1400px] mx-auto">
-        <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-6 reveal" style={{ color: 'var(--axt-gold)' }}>
-          What We Do
-        </span>
-        <h1 className="font-display text-5xl md:text-7xl lg:text-8xl leading-none mb-6 reveal reveal-delay-1">
-          Engineered<br />
-          <span style={{ color: 'var(--axt-gold)' }}>Solutions</span>
-        </h1>
-        <p className="font-editorial text-xl md:text-2xl max-w-2xl reveal reveal-delay-2" style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}>
-          Three disciplines, one mandate — to build systems that hold under pressure and scale with ambition.
-        </p>
-      </div>
-    </section>
+const Services = () => {
+  const heroRef = useReveal();
+  const catRefs = [useReveal(), useReveal(), useReveal()];
+  const ctaRef = useReveal();
 
-    {/* Service Categories */}
-    {allServices.map((cat, catIdx) => (
-      <section
-        key={cat.category}
-        className="px-6 md:px-12 py-[80px] md:py-[120px]"
-        style={{ background: catIdx % 2 === 0 ? 'var(--axt-obsidian)' : 'var(--axt-void)' }}
-      >
+  return (
+    <Layout>
+      {/* Hero */}
+      <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
-          <SectionLabel number={`0${catIdx + 1}`} label={cat.category} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: 'var(--axt-divider)' }}>
-            {cat.items.map((item) => (
-              <div
-                key={item.title}
-                className="p-8 md:p-12 group transition-colors duration-300"
-                style={{ background: catIdx % 2 === 0 ? 'var(--axt-obsidian)' : 'var(--axt-void)' }}
-              >
-                <h3 className="font-display text-2xl md:text-3xl mb-4 group-hover:text-axt-gold transition-colors duration-300">
-                  {item.title}
-                </h3>
-                <p className="font-mono text-xs leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+          <span className="reveal-target font-mono text-[9px] uppercase tracking-[0.5em] block mb-6" style={{ color: 'var(--axt-gold)' }}>
+            What We Do
+          </span>
+          <h1 className="reveal-target font-display text-5xl md:text-7xl lg:text-8xl leading-none mb-6">
+            Engineered<br />
+            <span style={{ color: 'var(--axt-gold)' }}>Solutions</span>
+          </h1>
+          <p className="reveal-target font-editorial text-xl md:text-2xl max-w-2xl" style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}>
+            Three disciplines, one mandate — to build systems that hold under pressure and scale with ambition.
+          </p>
+        </div>
+      </section>
+
+      {/* Service Categories */}
+      {allServices.map((cat, catIdx) => (
+        <section
+          key={cat.category}
+          ref={catRefs[catIdx]}
+          className="px-6 md:px-12 py-[80px] md:py-[120px]"
+          style={{ background: catIdx % 2 === 0 ? 'var(--axt-obsidian)' : 'var(--axt-void)' }}
+        >
+          <div className="max-w-[1400px] mx-auto">
+            <div className="reveal-target">
+              <SectionLabel number={`0${catIdx + 1}`} label={cat.category} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: 'var(--axt-divider)' }}>
+              {cat.items.map((item) => (
+                <div
+                  key={item.title}
+                  className="reveal-target p-8 md:p-12 group transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
+                  style={{ background: catIdx % 2 === 0 ? 'var(--axt-obsidian)' : 'var(--axt-void)' }}
+                >
+                  <h3 className="font-display text-2xl md:text-3xl mb-4 transition-colors duration-300" style={{ color: 'var(--axt-ivory)' }}>
+                    {item.title}
+                  </h3>
+                  <p className="font-mono text-xs leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+
+      {/* CTA */}
+      <section ref={ctaRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-carbon)' }}>
+        <div className="max-w-[1400px] mx-auto text-center">
+          <h2 className="reveal-target font-display text-4xl md:text-6xl mb-6">
+            Need Something<br /><span style={{ color: 'var(--axt-gold)' }}>Specific?</span>
+          </h2>
+          <p className="reveal-target font-editorial text-lg mb-10 max-w-lg mx-auto" style={{ color: 'var(--axt-text-dim)' }}>
+            Every engagement begins with understanding your landscape. Let's discuss yours.
+          </p>
+          <div className="reveal-target">
+            <Link to="/contact" className="btn-axt btn-axt-gold inline-block">
+              Start a Conversation
+            </Link>
           </div>
         </div>
       </section>
-    ))}
-
-    {/* CTA */}
-    <section className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-carbon)' }}>
-      <div className="max-w-[1400px] mx-auto text-center">
-        <h2 className="font-display text-4xl md:text-6xl mb-6">
-          Need Something<br /><span style={{ color: 'var(--axt-gold)' }}>Specific?</span>
-        </h2>
-        <p className="font-editorial text-lg mb-10 max-w-lg mx-auto" style={{ color: 'var(--axt-text-dim)' }}>
-          Every engagement begins with understanding your landscape. Let's discuss yours.
-        </p>
-        <Link to="/contact" className="btn-axt btn-axt-gold inline-block">
-          Start a Conversation
-        </Link>
-      </div>
-    </section>
-  </Layout>
-);
+    </Layout>
+  );
+};
 
 export default Services;

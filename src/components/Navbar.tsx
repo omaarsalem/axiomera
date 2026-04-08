@@ -1,5 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { label: "Services", path: "/services" },
@@ -10,7 +11,29 @@ const navItems = [
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { session } = useAuth();
+
+  // Handle hash scrolling after navigation
+  useEffect(() => {
+    if (location.hash === "#about") {
+      setTimeout(() => {
+        document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [location]);
+
+  const handleNavClick = (path: string) => {
+    setMobileOpen(false);
+    if (path === "/#about") {
+      if (location.pathname === "/") {
+        document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        navigate("/#about");
+      }
+    }
+  };
 
   return (
     <nav
@@ -30,18 +53,40 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
+          {navItems.map((item) =>
+            item.path === "/#about" ? (
+              <button
+                key={item.path}
+                onClick={() => handleNavClick(item.path)}
+                className="font-mono text-[10px] uppercase tracking-[0.35em] transition-colors duration-200 bg-transparent border-none cursor-pointer"
+                style={{ color: 'var(--axt-text-dim)' }}
+              >
+                {item.label}
+              </button>
+            ) : (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="font-mono text-[10px] uppercase tracking-[0.35em] transition-colors duration-200"
+                style={{
+                  color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
+                }}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
+          {session && (
             <Link
-              key={item.path}
-              to={item.path}
+              to="/hub"
               className="font-mono text-[10px] uppercase tracking-[0.35em] transition-colors duration-200"
               style={{
-                color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
+                color: location.pathname.startsWith('/hub') ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
               }}
             >
-              {item.label}
+              Hub
             </Link>
-          ))}
+          )}
           <Link to="/contact" className="btn-axt btn-axt-gold !py-3 !px-8">
             Brief Us
           </Link>
@@ -62,20 +107,47 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden px-6 pb-6 flex flex-col gap-4" style={{ background: 'var(--axt-void)' }}>
-          {navItems.map((item) => (
+          {navItems.map((item) =>
+            item.path === "/#about" ? (
+              <button
+                key={item.path}
+                onClick={() => handleNavClick(item.path)}
+                className="font-mono text-[11px] uppercase tracking-[0.35em] py-2 transition-colors text-left bg-transparent border-none cursor-pointer"
+                style={{
+                  color: 'var(--axt-text-dim)',
+                  borderBottom: '1px solid var(--axt-divider)',
+                }}
+              >
+                {item.label}
+              </button>
+            ) : (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setMobileOpen(false)}
+                className="font-mono text-[11px] uppercase tracking-[0.35em] py-2 transition-colors"
+                style={{
+                  color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
+                  borderBottom: '1px solid var(--axt-divider)',
+                }}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
+          {session && (
             <Link
-              key={item.path}
-              to={item.path}
+              to="/hub"
               onClick={() => setMobileOpen(false)}
               className="font-mono text-[11px] uppercase tracking-[0.35em] py-2 transition-colors"
               style={{
-                color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
+                color: location.pathname.startsWith('/hub') ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
                 borderBottom: '1px solid var(--axt-divider)',
               }}
             >
-              {item.label}
+              Hub
             </Link>
-          ))}
+          )}
           <Link
             to="/contact"
             onClick={() => setMobileOpen(false)}

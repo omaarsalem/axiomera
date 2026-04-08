@@ -1,8 +1,9 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
 import { ExternalLink } from "lucide-react";
+import useReveal from "@/hooks/useReveal";
 
 interface Course {
   platform: string;
@@ -140,11 +141,12 @@ const CourseCard = ({ course }: { course: Course }) => (
 
 const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
   const bgColor = index % 2 === 0 ? 'var(--axt-void)' : 'var(--axt-obsidian)';
+  const sectionRef = useReveal();
 
   return (
-    <section className="px-6 md:px-12 py-20 md:py-28" style={{ background: bgColor }}>
+    <section ref={sectionRef} className="px-6 md:px-12 py-20 md:py-28" style={{ background: bgColor }}>
       <div className="max-w-[1400px] mx-auto">
-        <div className="mb-12 reveal">
+        <div className="mb-12 reveal-target">
           <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
             Phase {phase.number} · {phase.months}
           </span>
@@ -156,7 +158,7 @@ const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal reveal-delay-2"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal-target"
           style={{ background: 'var(--axt-ghost-border)' }}>
           {phase.courses.map((course, i) => (
             <CourseCard key={i} course={course} />
@@ -169,6 +171,7 @@ const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
 
 const HannaPath = () => {
   const { session, loading } = useAuth();
+  const heroRef = useReveal();
 
   if (loading) {
     return (
@@ -187,11 +190,13 @@ const HannaPath = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="px-6 md:px-12 pt-24 pb-16 md:pt-32 md:pb-24" style={{ background: 'var(--axt-void)' }}>
+      <section ref={heroRef} className="px-6 md:px-12 pt-24 pb-16 md:pt-32 md:pb-24" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
-          <SectionLabel number="01" label="AXT Fellowship · Learning Path" />
+          <div className="reveal-target">
+            <SectionLabel number="01" label="AXT Fellowship · Learning Path" />
+          </div>
 
-          <div className="reveal">
+          <div className="reveal-target">
             <h1 className="font-display text-6xl md:text-8xl tracking-wider mb-6" style={{ color: 'var(--axt-ivory)' }}>
               Your Journey Starts Here,{" "}
               <span style={{ color: 'var(--axt-gold-bright)' }}>Hanna</span>.
@@ -203,7 +208,7 @@ const HannaPath = () => {
 
           {/* Stats Bar */}
           <div
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-[2px] reveal reveal-delay-2"
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-[2px] reveal-target"
             style={{ background: 'var(--axt-ghost-border)' }}
           >
             {[
@@ -232,9 +237,9 @@ const HannaPath = () => {
 
       {/* Back to Hub */}
       <section className="px-6 md:px-12 py-20 text-center" style={{ background: 'var(--axt-void)' }}>
-        <a href="/hub" className="btn-axt btn-axt-ghost">
+        <Link to="/hub" className="btn-axt btn-axt-ghost">
           ← Back to Hub
-        </a>
+        </Link>
       </section>
     </Layout>
   );

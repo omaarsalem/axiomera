@@ -7,7 +7,7 @@ const Footer = () => (
         {/* Brand */}
         <div className="md:col-span-2">
           <span className="font-display text-3xl tracking-wider" style={{ color: 'var(--axt-gold)' }}>AXT</span>
-          <p className="font-editorial text-lg mt-4 italic" style={{ color: 'var(--axt-text-dim)', fontFamily: "'Cormorant Garamond', serif" }}>
+          <p className="font-editorial text-lg mt-4" style={{ color: 'var(--axt-text-dim)' }}>
             "Built to be your only call."
           </p>
           <p className="font-mono text-xs mt-4 leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>
@@ -59,7 +59,7 @@ const Footer = () => (
           <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
             Markets
           </span>
-          {["Cairo, Egypt", "Leeds, UK"].map((loc) => (
+          {["Cairo, Egypt", "Leeds, UK", "London, UK"].map((loc) => (
             <p key={loc} className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>
               {loc}
             </p>
@@ -73,7 +73,7 @@ const Footer = () => (
         <p className="font-mono text-[10px]" style={{ color: 'var(--axt-text-faint)' }}>
           © {new Date().getFullYear()} Axiomera Technologies · All Rights Reserved
         </p>
-        <p className="font-mono text-[10px] italic" style={{ color: 'var(--axt-text-faint)', fontFamily: "'Cormorant Garamond', serif" }}>
+        <p className="font-editorial text-[10px]" style={{ color: 'var(--axt-text-faint)' }}>
           "Where decisions end."
         </p>
       </div>

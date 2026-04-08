@@ -1,28 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
-
-const useReveal = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("reveal");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08 }
-    );
-    const els = ref.current?.querySelectorAll(".reveal-target");
-    els?.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-  return ref;
-};
+import useReveal from "@/hooks/useReveal";
 
 const tickerItems = [
   "AXT Infrastructure",
@@ -122,6 +102,7 @@ const Index = () => {
   const whyRef = useReveal();
   const fellowshipRef = useReveal();
   const ctaRef = useReveal();
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
     <Layout>
@@ -145,8 +126,8 @@ const Index = () => {
             <span style={{ color: 'var(--axt-gold)' }}>End.</span>
           </h1>
           <p
-            className="reveal-target reveal reveal-delay-2 text-xl md:text-2xl max-w-xl mb-12 italic"
-            style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5', fontFamily: "'Cormorant Garamond', serif" }}
+            className="reveal-target reveal reveal-delay-2 font-editorial text-xl md:text-2xl max-w-xl mb-12"
+            style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}
           >
             "Built to be your only call."
           </p>
@@ -219,8 +200,8 @@ const Index = () => {
 
             <div>
               <blockquote
-                className="reveal-target text-2xl md:text-3xl italic mb-8"
-                style={{ color: 'var(--axt-text-dim)', fontFamily: "'Cormorant Garamond', serif", lineHeight: '1.4' }}
+                className="reveal-target font-editorial text-2xl md:text-3xl mb-8"
+                style={{ color: 'var(--axt-text-dim)', lineHeight: '1.4' }}
               >
                 "We exist so that once a client walks in, they never need to walk anywhere else."
               </blockquote>
@@ -276,7 +257,7 @@ const Index = () => {
                 <span className="font-display text-6xl block mb-4" style={{ color: 'var(--axt-gold-dim)' }}>{p.num}</span>
                 <h3 className="font-display text-3xl md:text-4xl mb-2">{p.name}</h3>
                 <span className="font-mono text-[9px] uppercase tracking-[0.35em] block mb-4" style={{ color: 'var(--axt-gold)' }}>{p.tagline}</span>
-                <p className="italic text-sm mb-6" style={{ color: 'var(--axt-text-dim)', fontFamily: "'Cormorant Garamond', serif" }}>
+                <p className="font-editorial text-sm mb-6" style={{ color: 'var(--axt-text-dim)' }}>
                   "{p.quote}"
                 </p>
                 <ul className="space-y-2">
@@ -305,8 +286,8 @@ const Index = () => {
             Our Standard
           </span>
           <blockquote
-            className="text-3xl md:text-5xl italic mb-8"
-            style={{ fontFamily: "'Cormorant Garamond', serif", color: 'var(--axt-ivory)', lineHeight: '1.3' }}
+            className="font-editorial text-3xl md:text-5xl mb-8"
+            style={{ color: 'var(--axt-ivory)', lineHeight: '1.3' }}
           >
             "Built to be your only call."
           </blockquote>
@@ -338,8 +319,12 @@ const Index = () => {
             {whyCards.map((c) => (
               <div
                 key={c.title}
-                className="reveal-target p-8 md:p-12 group transition-colors duration-300"
-                style={{ background: 'var(--axt-obsidian)' }}
+                className="reveal-target p-8 md:p-12 transition-colors duration-300 cursor-default"
+                style={{
+                  background: hoveredCard === c.title ? 'var(--axt-gold-subtle)' : 'var(--axt-obsidian)',
+                }}
+                onMouseEnter={() => setHoveredCard(c.title)}
+                onMouseLeave={() => setHoveredCard(null)}
               >
                 <span className="font-display text-5xl block mb-4" style={{ color: 'var(--axt-gold)' }}>{c.icon}</span>
                 <h3 className="font-display text-3xl mb-4">{c.title}</h3>
@@ -393,8 +378,8 @@ const Index = () => {
               </div>
 
               <blockquote
-                className="reveal-target text-xl italic mb-6 text-center"
-                style={{ fontFamily: "'Cormorant Garamond', serif", color: 'var(--axt-text-dim)', lineHeight: '1.4' }}
+                className="reveal-target font-editorial text-xl mb-6 text-center"
+                style={{ color: 'var(--axt-text-dim)', lineHeight: '1.4' }}
               >
                 "Where decisions end — and careers begin."
               </blockquote>
@@ -431,8 +416,8 @@ const Index = () => {
                 <span style={{ color: 'var(--axt-gold)' }}>Call.</span>
               </h2>
               <p
-                className="reveal-target text-xl italic mb-10"
-                style={{ fontFamily: "'Cormorant Garamond', serif", color: 'var(--axt-text-dim)', lineHeight: '1.5' }}
+                className="reveal-target font-editorial text-xl mb-10"
+                style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}
               >
                 "The last firm you'll ever need to call is one conversation away."
               </p>
