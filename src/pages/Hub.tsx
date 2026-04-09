@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
+import { supabase } from "@/integrations/supabase/client";
+import useReveal from "@/hooks/useReveal";
 
 const HubLogin = () => {
   const { signIn } = useAuth();
@@ -10,14 +12,32 @@ const HubLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const [showReset, setShowReset] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     const { error } = await signIn(email, password);
+    if (error) setError("Invalid credentials. Please try again.");
+    setLoading(false);
+  };
+
+  const handleReset = async () => {
+    if (!email) {
+      setError("Enter your email address first.");
+      return;
+    }
+    setError("");
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
     if (error) {
-      setError("Invalid credentials. Please try again.");
+      setError(error.message);
+    } else {
+      setResetSent(true);
     }
     setLoading(false);
   };
@@ -35,57 +55,87 @@ const HubLogin = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div>
-              <label className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-3 font-mono text-sm bg-transparent border outline-none transition-colors focus:border-[var(--axt-gold-dim)]"
-                style={{
-                  borderColor: 'var(--axt-ghost-border)',
-                  color: 'var(--axt-ivory)',
-                  borderRadius: 0,
-                }}
-                placeholder="fellow@email.com"
-              />
+          {resetSent ? (
+            <div className="text-center p-8" style={{ border: '1px solid var(--axt-divider)' }}>
+              <h3 className="font-display text-3xl mb-4" style={{ color: 'var(--axt-gold)' }}>Check Your Email.</h3>
+              <p className="font-mono text-xs" style={{ color: 'var(--axt-text-dim)' }}>
+                If an account exists for {email}, you'll receive a password reset link shortly.
+              </p>
+              <button onClick={() => { setResetSent(false); setShowReset(false); }} className="btn-axt btn-axt-ghost mt-6 !py-2 !px-6">
+                Back to Login
+              </button>
             </div>
-
+          ) : showReset ? (
             <div>
-              <label className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-3 font-mono text-sm bg-transparent border outline-none transition-colors focus:border-[var(--axt-gold-dim)]"
-                style={{
-                  borderColor: 'var(--axt-ghost-border)',
-                  color: 'var(--axt-ivory)',
-                  borderRadius: 0,
-                }}
-                placeholder="••••••••"
-              />
+              <p className="font-mono text-xs mb-6" style={{ color: 'var(--axt-text-dim)' }}>
+                Enter your email and we'll send you a password reset link.
+              </p>
+              <div className="mb-4">
+                <label className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 font-mono text-sm bg-transparent border outline-none transition-colors"
+                  style={{ borderColor: 'var(--axt-ghost-border)', color: 'var(--axt-ivory)', borderRadius: 0 }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = 'var(--axt-gold)'}
+                  onBlur={(e) => e.currentTarget.style.borderColor = 'var(--axt-ghost-border)'}
+                  placeholder="fellow@email.com"
+                />
+              </div>
+              {error && <p className="font-mono text-xs mb-4" style={{ color: '#e74c3c' }}>{error}</p>}
+              <button onClick={handleReset} disabled={loading} className="btn-axt btn-axt-gold w-full text-center mb-4">
+                {loading ? "Sending..." : "Send Reset Link"}
+              </button>
+              <button onClick={() => setShowReset(false)} className="btn-axt btn-axt-ghost w-full text-center">
+                Back to Login
+              </button>
             </div>
-
-            {error && (
-              <p className="font-mono text-xs" style={{ color: '#e74c3c' }}>{error}</p>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-axt btn-axt-gold mt-4 w-full text-center"
-            >
-              {loading ? "Authenticating..." : "Access Hub"}
-            </button>
-          </form>
+          ) : (
+            <>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div>
+                  <label className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 font-mono text-sm bg-transparent border outline-none transition-colors"
+                    style={{ borderColor: 'var(--axt-ghost-border)', color: 'var(--axt-ivory)', borderRadius: 0 }}
+                    onFocus={(e) => e.currentTarget.style.borderColor = 'var(--axt-gold)'}
+                    onBlur={(e) => e.currentTarget.style.borderColor = 'var(--axt-ghost-border)'}
+                    placeholder="fellow@email.com"
+                  />
+                </div>
+                <div>
+                  <label className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 font-mono text-sm bg-transparent border outline-none transition-colors"
+                    style={{ borderColor: 'var(--axt-ghost-border)', color: 'var(--axt-ivory)', borderRadius: 0 }}
+                    onFocus={(e) => e.currentTarget.style.borderColor = 'var(--axt-gold)'}
+                    onBlur={(e) => e.currentTarget.style.borderColor = 'var(--axt-ghost-border)'}
+                    placeholder="••••••••"
+                  />
+                </div>
+                {error && <p className="font-mono text-xs" style={{ color: '#e74c3c' }}>{error}</p>}
+                <button type="submit" disabled={loading} className="btn-axt btn-axt-gold mt-4 w-full text-center">
+                  {loading ? "Authenticating..." : "Access Hub"}
+                </button>
+              </form>
+              <button
+                onClick={() => setShowReset(true)}
+                className="w-full text-center mt-4 font-mono text-[10px] bg-transparent border-none cursor-pointer transition-colors"
+                style={{ color: 'var(--axt-text-faint)' }}
+              >
+                Forgot password?
+              </button>
+            </>
+          )}
 
           <p className="text-center mt-8 font-mono text-[10px]" style={{ color: 'var(--axt-text-faint)' }}>
             Access is limited to AXT Fellowship members.
@@ -98,49 +148,92 @@ const HubLogin = () => {
 
 const HubDashboard = () => {
   const { user, signOut } = useAuth();
-  const displayName = user?.email?.split("@")[0] ?? "Fellow";
+  const [displayName, setDisplayName] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [progressStats, setProgressStats] = useState({ completed: 0, total: 0 });
+  const heroRef = useReveal();
+
+  useEffect(() => {
+    if (!user) return;
+
+    supabase.from("profiles").select("display_name").eq("user_id", user.id).single()
+      .then(({ data }) => setDisplayName(data?.display_name ?? null));
+
+    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
+      .then(({ data }) => setIsAdmin((data?.length ?? 0) > 0));
+
+    supabase.from("course_progress").select("status").eq("user_id", user.id)
+      .then(({ data }) => {
+        const items = data ?? [];
+        setProgressStats({
+          completed: items.filter((c) => c.status === "completed").length,
+          total: items.length,
+        });
+      });
+  }, [user]);
+
+  const name = displayName || user?.email?.split("@")[0] || "Fellow";
 
   return (
     <Layout>
-      <section className="min-h-screen px-6 md:px-12 py-24 md:py-32" style={{ background: 'var(--axt-void)' }}>
+      <section ref={heroRef} className="min-h-screen px-6 md:px-12 py-24 md:py-32" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
-          {/* Header */}
           <div className="flex items-center justify-between mb-16">
             <SectionLabel number="01" label="AXT Fellowship · Member Hub" />
-            <button
-              onClick={signOut}
-              className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0"
-            >
-              Sign Out
-            </button>
+            <div className="flex items-center gap-3">
+              {isAdmin && (
+                <Link to="/hub/admin" className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0">Admin</Link>
+              )}
+              <Link to="/hub/profile" className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0">Profile</Link>
+              <button onClick={signOut} className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0">Sign Out</button>
+            </div>
           </div>
 
-          {/* Welcome */}
-          <div className="mb-20 reveal">
+          <div className="mb-20 reveal-target">
             <h1 className="font-display text-5xl md:text-7xl tracking-wider mb-4" style={{ color: 'var(--axt-ivory)' }}>
-              Welcome, <span style={{ color: 'var(--axt-gold-bright)' }}>{displayName}</span>
+              Welcome, <span style={{ color: 'var(--axt-gold-bright)' }}>{name}</span>
             </h1>
             <p className="font-editorial text-xl" style={{ color: 'var(--axt-text-dim)' }}>
               Your learning journey continues here.
             </p>
           </div>
 
+          {/* Progress Summary */}
+          {progressStats.total > 0 && (
+            <div className="mb-12 reveal-target">
+              <div className="flex items-center gap-4 mb-3">
+                <span className="font-mono text-[9px] uppercase tracking-[0.5em]" style={{ color: 'var(--axt-gold)' }}>
+                  Overall Progress
+                </span>
+                <span className="font-display text-xl" style={{ color: 'var(--axt-gold-bright)' }}>
+                  {progressStats.completed}/{progressStats.total}
+                </span>
+              </div>
+              <div className="h-1 w-full" style={{ background: 'var(--axt-divider)' }}>
+                <div
+                  className="h-full transition-all duration-500"
+                  style={{
+                    width: `${(progressStats.completed / progressStats.total) * 100}%`,
+                    background: 'var(--axt-gold)',
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
           {/* Learning Path Cards */}
-          <div className="mb-8 reveal reveal-delay-2">
+          <div className="mb-8 reveal-target">
             <h2 className="font-display text-3xl tracking-wider mb-8" style={{ color: 'var(--axt-ivory)' }}>
               Learning Paths
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal reveal-delay-3"
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal-target"
             style={{ background: 'var(--axt-ghost-border)' }}>
-            {/* Hanna's Path Card */}
             <Link
               to="/hub/hanna"
-              className="block p-8 transition-colors duration-300"
+              className="block p-8 transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
               style={{ background: 'var(--axt-carbon)' }}
-              onMouseEnter={(e) => e.currentTarget.style.background = 'var(--axt-gold-subtle)'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'var(--axt-carbon)'}
             >
               <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
                 Fellow · Hanna
@@ -151,7 +244,6 @@ const HubDashboard = () => {
               <p className="font-mono text-xs mb-6" style={{ color: 'var(--axt-text-dim)' }}>
                 Business Administration & Digital Marketing
               </p>
-
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { value: "8", label: "Phases" },
@@ -160,12 +252,8 @@ const HubDashboard = () => {
                   { value: "£0", label: "Cost" },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <span className="font-display text-2xl" style={{ color: 'var(--axt-gold-bright)' }}>
-                      {stat.value}
-                    </span>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.4em] block mt-1" style={{ color: 'var(--axt-text-faint)' }}>
-                      {stat.label}
-                    </span>
+                    <span className="font-display text-2xl" style={{ color: 'var(--axt-gold-bright)' }}>{stat.value}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.4em] block mt-1" style={{ color: 'var(--axt-text-faint)' }}>{stat.label}</span>
                   </div>
                 ))}
               </div>
@@ -184,7 +272,13 @@ const Hub = () => {
     return (
       <Layout>
         <section className="min-h-screen flex items-center justify-center" style={{ background: 'var(--axt-void)' }}>
-          <p className="font-mono text-sm" style={{ color: 'var(--axt-text-dim)' }}>Loading...</p>
+          <div className="text-center">
+            <div className="inline-block w-8 h-8 mb-4" style={{ border: '2px solid var(--axt-divider)', borderTopColor: 'var(--axt-gold)' }}>
+              <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+              <div style={{ width: '100%', height: '100%', animation: 'spin 0.8s linear infinite' }} />
+            </div>
+            <p className="font-mono text-sm" style={{ color: 'var(--axt-text-dim)' }}>Loading...</p>
+          </div>
         </section>
       </Layout>
     );

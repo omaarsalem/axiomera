@@ -15,7 +15,7 @@ const Footer = () => (
           </p>
         </div>
 
-        {/* Services */}
+        {/* Navigation */}
         <div>
           <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
             Services
@@ -25,12 +25,7 @@ const Footer = () => (
             { label: "AXT Cyber", path: "/services" },
             { label: "AXT Governance", path: "/services" },
           ].map((item) => (
-            <Link
-              key={item.label}
-              to={item.path}
-              className="block font-mono text-xs mb-2 transition-colors hover:text-axt-gold"
-              style={{ color: 'var(--axt-text-dim)' }}
-            >
+            <Link key={item.label} to={item.path} className="block font-mono text-xs mb-2 transition-colors hover:text-axt-gold" style={{ color: 'var(--axt-text-dim)' }}>
               {item.label}
             </Link>
           ))}
@@ -39,16 +34,15 @@ const Footer = () => (
             Company
           </span>
           {[
-            { label: "About AXT", path: "/#about" },
+            { label: "About AXT", path: "/about" },
+            { label: "Case Studies", path: "/work" },
+            { label: "Insights", path: "/insights" },
             { label: "Fellowship", path: "/fellowship" },
+            { label: "Careers", path: "/careers" },
+            { label: "FAQ", path: "/faq" },
             { label: "Contact", path: "/contact" },
           ].map((item) => (
-            <Link
-              key={item.label}
-              to={item.path}
-              className="block font-mono text-xs mb-2 transition-colors hover:text-axt-gold"
-              style={{ color: 'var(--axt-text-dim)' }}
-            >
+            <Link key={item.label} to={item.path} className="block font-mono text-xs mb-2 transition-colors hover:text-axt-gold" style={{ color: 'var(--axt-text-dim)' }}>
               {item.label}
             </Link>
           ))}
@@ -60,10 +54,13 @@ const Footer = () => (
             Markets
           </span>
           {["Cairo, Egypt", "Leeds, UK", "London, UK"].map((loc) => (
-            <p key={loc} className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>
-              {loc}
-            </p>
+            <p key={loc} className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>{loc}</p>
           ))}
+
+          <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4 mt-8" style={{ color: 'var(--axt-gold)' }}>
+            Contact
+          </span>
+          <p className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>hello@axt.tech</p>
         </div>
       </div>
 
