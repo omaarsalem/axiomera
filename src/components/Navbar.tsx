@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { label: "Services", path: "/services" },
-  { label: "About", path: "/#about" },
+  { label: "Work", path: "/work" },
+  { label: "About", path: "/about" },
   { label: "Fellowship", path: "/fellowship" },
-  { label: "Contact", path: "/contact" },
+  { label: "Insights", path: "/insights" },
 ];
 
 const Navbar = () => {
@@ -15,7 +16,6 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { session } = useAuth();
 
-  // Handle hash scrolling after navigation
   useEffect(() => {
     if (location.hash === "#about") {
       setTimeout(() => {
@@ -24,28 +24,14 @@ const Navbar = () => {
     }
   }, [location]);
 
-  const handleNavClick = (path: string) => {
-    setMobileOpen(false);
-    if (path === "/#about") {
-      if (location.pathname === "/") {
-        document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        navigate("/#about");
-      }
-    }
-  };
-
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-[9998] backdrop-blur-md"
       style={{ background: 'rgba(6,6,10,0.85)', borderBottom: '1px solid var(--axt-divider)' }}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between h-16">
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
-          <span className="font-display text-2xl tracking-wider" style={{ color: 'var(--axt-gold)' }}>
-            AXT
-          </span>
+          <span className="font-display text-2xl tracking-wider" style={{ color: 'var(--axt-gold)' }}>AXT</span>
           <span className="hidden sm:inline font-mono text-[9px] uppercase tracking-[0.4em]" style={{ color: 'var(--axt-text-dim)' }}>
             Axiomera Technologies
           </span>
@@ -53,29 +39,18 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) =>
-            item.path === "/#about" ? (
-              <button
-                key={item.path}
-                onClick={() => handleNavClick(item.path)}
-                className="font-mono text-[10px] uppercase tracking-[0.35em] transition-colors duration-200 bg-transparent border-none cursor-pointer"
-                style={{ color: 'var(--axt-text-dim)' }}
-              >
-                {item.label}
-              </button>
-            ) : (
-              <Link
-                key={item.path}
-                to={item.path}
-                className="font-mono text-[10px] uppercase tracking-[0.35em] transition-colors duration-200"
-                style={{
-                  color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
-                }}
-              >
-                {item.label}
-              </Link>
-            )
-          )}
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className="font-mono text-[10px] uppercase tracking-[0.35em] transition-colors duration-200"
+              style={{
+                color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
+              }}
+            >
+              {item.label}
+            </Link>
+          ))}
           {session && (
             <Link
               to="/hub"
@@ -87,9 +62,7 @@ const Navbar = () => {
               Hub
             </Link>
           )}
-          <Link to="/contact" className="btn-axt btn-axt-gold !py-3 !px-8">
-            Brief Us
-          </Link>
+          <Link to="/contact" className="btn-axt btn-axt-gold !py-3 !px-8">Brief Us</Link>
         </div>
 
         {/* Mobile toggle */}
@@ -107,34 +80,20 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden px-6 pb-6 flex flex-col gap-4" style={{ background: 'var(--axt-void)' }}>
-          {navItems.map((item) =>
-            item.path === "/#about" ? (
-              <button
-                key={item.path}
-                onClick={() => handleNavClick(item.path)}
-                className="font-mono text-[11px] uppercase tracking-[0.35em] py-2 transition-colors text-left bg-transparent border-none cursor-pointer"
-                style={{
-                  color: 'var(--axt-text-dim)',
-                  borderBottom: '1px solid var(--axt-divider)',
-                }}
-              >
-                {item.label}
-              </button>
-            ) : (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setMobileOpen(false)}
-                className="font-mono text-[11px] uppercase tracking-[0.35em] py-2 transition-colors"
-                style={{
-                  color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
-                  borderBottom: '1px solid var(--axt-divider)',
-                }}
-              >
-                {item.label}
-              </Link>
-            )
-          )}
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setMobileOpen(false)}
+              className="font-mono text-[11px] uppercase tracking-[0.35em] py-2 transition-colors"
+              style={{
+                color: location.pathname === item.path ? 'var(--axt-gold)' : 'var(--axt-text-dim)',
+                borderBottom: '1px solid var(--axt-divider)',
+              }}
+            >
+              {item.label}
+            </Link>
+          ))}
           {session && (
             <Link
               to="/hub"
@@ -148,11 +107,7 @@ const Navbar = () => {
               Hub
             </Link>
           )}
-          <Link
-            to="/contact"
-            onClick={() => setMobileOpen(false)}
-            className="btn-axt btn-axt-gold text-center mt-2"
-          >
+          <Link to="/contact" onClick={() => setMobileOpen(false)} className="btn-axt btn-axt-gold text-center mt-2">
             Brief Us
           </Link>
         </div>

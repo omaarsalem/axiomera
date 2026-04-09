@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import GrainOverlay from "./GrainOverlay";
+import BackToTop from "./BackToTop";
+import CookieConsent from "./CookieConsent";
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <>
@@ -11,6 +13,8 @@ const Layout = ({ children }: { children: ReactNode }) => (
       {children}
     </main>
     <Footer />
+    <BackToTop />
+    <CookieConsent />
   </>
 );
 
