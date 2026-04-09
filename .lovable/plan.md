@@ -1,96 +1,88 @@
 
 
-## Full Project Review — Improvements & Enhancements
+## New Pages, Improvements & Enhancements
 
-After reviewing every page and component, here are the issues and improvements organized by priority.
+### A. New Pages
 
----
+**1. Case Studies / Portfolio (`/work`)**
+A page showcasing AXT's project work — anonymized case studies with problem/approach/outcome structure. Builds credibility with prospective clients. Each case study as a card with sector tag (Finance, Healthcare, Government), service pillar badge, and key metrics.
 
-### 1. Critical Fixes
+**2. Team / About (`/about`)**
+A dedicated About page (separate from the homepage section) with team bios, company timeline, and values. Positions AXT as a serious firm with named senior practitioners — reinforces the "Senior Delivery" promise.
 
-**A. 404 Page doesn't match AXT design system**
-The NotFound page uses default Tailwind classes (`bg-muted`, `text-muted-foreground`) instead of AXT branding. It should use `Layout`, Bebas Neue headings, Void background, gold accents, and a ghost button back to home.
+**3. Blog / Insights (`/insights`)**
+A content hub for thought leadership — cybersecurity advisories, governance guidance, IT strategy articles. Stored in the database, with an admin interface in the Hub. Drives SEO and positions AXT as an authority.
 
-**B. Contact form doesn't actually send data**
-`handleSubmit` just sets `submitted = true` — no data is stored or emailed. Wire it to a database table so enquiries are saved and you can view them.
+**4. FAQ (`/faq`)**
+Common questions about services, engagement models, the Fellowship programme. Reduces friction for prospects deciding whether to reach out. Uses accordion components.
 
-**C. About anchor (`/#about`) doesn't smooth-scroll**
-Clicking "About" in the nav navigates but doesn't scroll to the `#about` section when already on the home page. Need scroll-to-hash logic.
-
-**D. `useReveal` hook is duplicated / inconsistent**
-The `useReveal` hook is defined inline in `Index.tsx` but other pages (Services, Fellowship, HannaPath) use bare `reveal` CSS classes without the intersection observer — meaning their animations fire immediately on load instead of on scroll.
-
----
-
-### 2. UX & Navigation Enhancements
-
-**E. No "Hub" link in navbar for authenticated users**
-After login, fellows have no way to reach `/hub` from the navbar. Add a conditional "Hub" link (or user icon) that appears when authenticated.
-
-**F. Mobile menu doesn't close on navigation**
-The mobile menu closes on click, but the `/#about` hash link won't trigger a route change — menu stays open.
-
-**G. Footer missing London market**
-Footer lists Cairo and Leeds but omits London.
-
-**H. Back button in HannaPath uses `<a>` instead of `<Link>`**
-Line 235 of HannaPath uses `<a href="/hub">` which causes a full page reload. Should use React Router `<Link>`.
+**5. Careers (`/careers`)**
+Separate from the Fellowship — a page for professional hires. Even if there are no current openings, it signals growth and ambition. Can include a "Register interest" form wired to the database.
 
 ---
 
-### 3. Design Polish
+### B. Hub Enhancements
 
-**I. Services page has no scroll-reveal animations**
-Cards appear statically. Should use the same `useReveal` intersection observer pattern as the homepage.
+**6. Course Progress Tracking**
+Add a `course_progress` table in the database. Each course card gets a status toggle (Not Started / In Progress / Completed). The Hub dashboard shows an overall progress bar and phase completion percentage. Fellows can see how far they've come.
 
-**J. Fellowship page has no scroll-reveal animations**
-Same issue — sections appear without animation.
+**7. Password Reset Flow**
+Add a "Forgot password?" link on the Hub login page that triggers a password reset email via the auth system. Essential for real users.
 
-**K. Why AXT cards have no hover effect**
-Homepage "Why AXT" cards have no hover state. Add the same `onMouseEnter`/`onMouseLeave` gold-subtle background transition used on the Hub dashboard cards.
+**8. Fellow Profile Page (`/hub/profile`)**
+A simple page where fellows can see their email, update their display name, and view their progress stats (courses completed, current phase, streak).
 
-**L. Contact form inputs don't have visible focus states**
-`focus:border-axt-gold` won't work because `axt-gold` isn't defined in Tailwind config as a color — it's a CSS variable. Fix focus styles.
-
----
-
-### 4. Technical Debt
-
-**M. Extract `useReveal` to a shared hook**
-Move from `Index.tsx` to `src/hooks/useReveal.ts` and use consistently across all pages.
-
-**N. Inline styles everywhere**
-Many components use `style={{ color: 'var(--axt-gold)' }}` repeatedly. Create Tailwind utility classes (e.g., `text-axt-gold`, `bg-axt-void`) mapped to CSS variables in `tailwind.config.ts` for cleaner code.
-
-**O. `font-editorial` class defined in CSS but used inconsistently**
-Some places use `className="font-editorial"`, others use inline `style={{ fontFamily: "'Cormorant Garamond', serif" }}`. Standardize.
+**9. Admin Dashboard (`/hub/admin`)**
+For AXT staff — view all fellows, their progress, and submitted enquiries from the contact form. Protected by a role-based check (admin role in a `user_roles` table).
 
 ---
 
-### 5. Content & SEO
+### C. UX & Design Improvements
 
-**P. Missing favicon**
-No favicon is set in `index.html`.
+**10. Page Transition Animations**
+Add fade/slide transitions between routes using React Router + CSS. Gives the site a polished, app-like feel consistent with the premium brand.
 
-**Q. Missing `<meta>` keywords and structured data**
-Add relevant meta tags for IT/cybersecurity consulting SEO.
+**11. Loading Skeleton States**
+Replace the plain "Loading..." text in the Hub with skeleton shimmer components matching the card layouts. More professional.
+
+**12. Back-to-Top Button**
+A subtle gold arrow that appears after scrolling past the fold. Useful on long pages like Services and HannaPath.
+
+**13. Cookie Consent Banner**
+If targeting UK/EU users (Leeds, London, Cairo), a minimal GDPR cookie consent banner is expected. Ghost-style button, dismissible, stores preference in localStorage.
+
+**14. Dark/Light Mode Toggle** *(optional — may conflict with brand)*
+The AXT brand is fundamentally dark. Skip this unless explicitly requested.
 
 ---
 
-### Implementation Plan (prioritized)
+### D. Technical Improvements
 
-| Step | What | Files |
-|------|------|-------|
-| 1 | Extract `useReveal` to shared hook | `src/hooks/useReveal.ts`, update all pages |
-| 2 | Add Tailwind color utilities for AXT tokens | `tailwind.config.ts` |
-| 3 | Restyle 404 page to AXT design | `src/pages/NotFound.tsx` |
-| 4 | Add scroll-reveal to Services + Fellowship | `Services.tsx`, `Fellowship.tsx` |
-| 5 | Fix About anchor smooth scroll | `src/components/Navbar.tsx` |
-| 6 | Add "Hub" nav link for authenticated users | `Navbar.tsx` |
-| 7 | Fix Footer (add London) | `Footer.tsx` |
-| 8 | Fix HannaPath `<a>` → `<Link>` | `HannaPath.tsx` |
-| 9 | Add hover effects to Why AXT cards | `Index.tsx` |
-| 10 | Fix contact form focus styles | `Contact.tsx` |
-| 11 | Wire contact form to database | Migration + `Contact.tsx` |
-| 12 | Standardize `font-editorial` usage | Multiple files |
+**15. Image/Asset Optimization**
+Add Open Graph meta images for social sharing. When someone shares axt.tech on LinkedIn or Twitter, it should show a branded preview card — not a blank thumbnail.
+
+**16. Sitemap & robots.txt**
+Generate a sitemap.xml for SEO. The existing robots.txt exists but may need updating to reference the sitemap.
+
+**17. Analytics Integration**
+Add lightweight, privacy-respecting analytics (e.g., Plausible or a simple page-view tracker via database) to understand traffic patterns.
+
+---
+
+### Recommended Priority Order
+
+| Priority | Item | Impact |
+|----------|------|--------|
+| 1 | Course progress tracking (Hub) | High — core fellowship UX |
+| 2 | Password reset flow | High — essential for real users |
+| 3 | Case Studies page | High — client conversion |
+| 4 | Admin dashboard | High — operational need |
+| 5 | Blog/Insights page | Medium — SEO + authority |
+| 6 | Fellow profile page | Medium — personalization |
+| 7 | FAQ page | Medium — reduces friction |
+| 8 | OG meta images | Medium — social sharing |
+| 9 | Page transitions | Low — polish |
+| 10 | Cookie consent | Low — compliance |
+
+Let me know which items you want to build, or say "all" and I'll work through them in priority order.
 
