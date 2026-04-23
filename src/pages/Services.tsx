@@ -33,9 +33,50 @@ const allServices = [
   },
 ];
 
+const industries = [
+  { name: "Financial Services", desc: "Banks, insurers, fintech — regulated environments demanding airtight controls." },
+  { name: "Healthcare", desc: "Hospitals and clinics handling sensitive patient data under tight compliance regimes." },
+  { name: "Government", desc: "Ministries and agencies modernising legacy infrastructure at national scale." },
+  { name: "Energy & Utilities", desc: "Critical infrastructure protection for oil, gas, and power operators." },
+  { name: "Education", desc: "Universities and research institutions balancing openness with security." },
+  { name: "Retail & E-Commerce", desc: "Consumer-facing platforms with GDPR, PCI-DSS, and uptime imperatives." },
+];
+
+const methodology = [
+  { num: "01", title: "Discover", desc: "We map your landscape — systems, people, risk posture, regulatory exposure. No assumptions." },
+  { num: "02", title: "Design", desc: "Senior architects translate findings into a defensible, scalable solution blueprint." },
+  { num: "03", title: "Deploy", desc: "Phased delivery with clear milestones, zero-surprise change management, and measured rollouts." },
+  { num: "04", title: "Defend", desc: "Continuous monitoring, hardening, and tuning. The system improves under our care." },
+  { num: "05", title: "Document", desc: "Every decision, every control, every artefact — captured for audit, handover, and continuity." },
+];
+
+const engagementModels = [
+  {
+    name: "Project",
+    tagline: "Defined Scope",
+    desc: "Fixed-outcome engagements with clear deliverables, timelines, and acceptance criteria. Best for migrations, audits, deployments.",
+    features: ["Fixed scope & price", "Milestone-based delivery", "Final handover docs"],
+  },
+  {
+    name: "Retainer",
+    tagline: "Ongoing Partnership",
+    desc: "Monthly engagement with reserved senior capacity for advisory, operations, and incident support across your stack.",
+    features: ["Reserved capacity", "Monthly reporting", "SLA-backed response"],
+  },
+  {
+    name: "Fractional CISO",
+    tagline: "Executive Coverage",
+    desc: "Senior security leadership on demand — board reporting, programme ownership, and audit representation without a full-time hire.",
+    features: ["Board-level reporting", "Programme ownership", "Audit & compliance lead"],
+  },
+];
+
 const Services = () => {
   const heroRef = useReveal();
   const catRefs = [useReveal(), useReveal(), useReveal()];
+  const industriesRef = useReveal();
+  const methodologyRef = useReveal();
+  const modelsRef = useReveal();
   const ctaRef = useReveal();
 
   return (
@@ -87,6 +128,90 @@ const Services = () => {
           </div>
         </section>
       ))}
+
+      {/* Methodology */}
+      <section ref={methodologyRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-obsidian)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="04" label="How We Work" />
+          </div>
+          <h2 className="reveal-target font-display text-4xl md:text-6xl mb-4">
+            The AXT<br /><span style={{ color: 'var(--axt-gold)' }}>Method.</span>
+          </h2>
+          <p className="reveal-target font-mono text-xs leading-relaxed max-w-2xl mb-16" style={{ color: 'var(--axt-text-dim)' }}>
+            Five disciplined stages. Every engagement. No shortcuts, no surprises — just senior delivery from first call to final handover.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-px" style={{ background: 'var(--axt-divider)' }}>
+            {methodology.map((m) => (
+              <div key={m.num} className="reveal-target p-6 md:p-8" style={{ background: 'var(--axt-obsidian)' }}>
+                <span className="font-display text-5xl block mb-4" style={{ color: 'var(--axt-gold-bright)' }}>{m.num}</span>
+                <h3 className="font-display text-2xl mb-3" style={{ color: 'var(--axt-ivory)' }}>{m.title}</h3>
+                <p className="font-mono text-[11px] leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>{m.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Industries */}
+      <section ref={industriesRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="05" label="Industries Served" />
+          </div>
+          <h2 className="reveal-target font-display text-4xl md:text-6xl mb-4">
+            Sectors We<br /><span style={{ color: 'var(--axt-gold)' }}>Understand.</span>
+          </h2>
+          <p className="reveal-target font-mono text-xs leading-relaxed max-w-2xl mb-16" style={{ color: 'var(--axt-text-dim)' }}>
+            Deep domain fluency across regulated and high-stakes industries. We speak your auditors' language.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'var(--axt-divider)' }}>
+            {industries.map((ind) => (
+              <div
+                key={ind.name}
+                className="reveal-target p-8 md:p-10 transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
+                style={{ background: 'var(--axt-void)' }}
+              >
+                <h3 className="font-display text-2xl mb-3" style={{ color: 'var(--axt-ivory)' }}>{ind.name}</h3>
+                <p className="font-mono text-xs leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>{ind.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Engagement Models */}
+      <section ref={modelsRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-obsidian)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="06" label="Engagement Models" />
+          </div>
+          <h2 className="reveal-target font-display text-4xl md:text-6xl mb-4">
+            Three Ways<br /><span style={{ color: 'var(--axt-gold)' }}>To Engage.</span>
+          </h2>
+          <p className="reveal-target font-mono text-xs leading-relaxed max-w-2xl mb-16" style={{ color: 'var(--axt-text-dim)' }}>
+            Pricing is bespoke to scope and risk profile. Every engagement begins with a no-obligation discovery call.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ background: 'var(--axt-divider)' }}>
+            {engagementModels.map((m, i) => (
+              <div key={m.name} className="reveal-target p-8 md:p-12 flex flex-col" style={{ background: 'var(--axt-obsidian)' }}>
+                <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
+                  0{i + 1} — {m.tagline}
+                </span>
+                <h3 className="font-display text-3xl md:text-4xl mb-4" style={{ color: 'var(--axt-ivory)' }}>{m.name}</h3>
+                <p className="font-mono text-xs leading-relaxed mb-6 flex-1" style={{ color: 'var(--axt-text-dim)' }}>{m.desc}</p>
+                <ul className="space-y-2 pt-6" style={{ borderTop: '1px solid var(--axt-divider)' }}>
+                  {m.features.map((f) => (
+                    <li key={f} className="font-mono text-[11px] flex items-start gap-2" style={{ color: 'var(--axt-text-dim)' }}>
+                      <span style={{ color: 'var(--axt-gold)' }}>—</span> {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA */}
       <section ref={ctaRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-carbon)' }}>

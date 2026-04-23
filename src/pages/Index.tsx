@@ -335,6 +335,52 @@ const Index = () => {
         </div>
       </section>
 
+      {/* ── Testimonials ── */}
+      <section
+        className="px-6 md:px-12 py-[80px] md:py-[120px]"
+        style={{ background: 'var(--axt-void)' }}
+      >
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="04" label="Client Voices" />
+          </div>
+          <h2 className="reveal-target font-display text-5xl md:text-7xl mb-16">
+            What Clients<br />
+            <span style={{ color: 'var(--axt-gold)' }}>Tell Us.</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ background: 'var(--axt-divider)' }}>
+            {[
+              {
+                quote: "AXT walked in, mapped our risk in two weeks, and gave us a roadmap our board could actually action. No jargon, no upsell.",
+                attribution: "CIO",
+                org: "Regional Bank · Cairo",
+              },
+              {
+                quote: "We've worked with the big names. AXT is the first firm where the people we met in the pitch were the people who did the work.",
+                attribution: "Head of IT",
+                org: "Hospital Group · UK",
+              },
+              {
+                quote: "Got us through ISO 27001 first time, zero non-conformities. They knew our auditor better than our auditor knew us.",
+                attribution: "Compliance Director",
+                org: "Logistics · MENA",
+              },
+            ].map((t, i) => (
+              <div key={i} className="reveal-target p-8 md:p-12 flex flex-col" style={{ background: 'var(--axt-void)' }}>
+                <span className="font-display text-5xl mb-6" style={{ color: 'var(--axt-gold)', lineHeight: 1 }}>"</span>
+                <blockquote className="font-editorial text-lg md:text-xl mb-8 flex-1" style={{ color: 'var(--axt-ivory)', lineHeight: 1.5 }}>
+                  {t.quote}
+                </blockquote>
+                <div className="pt-6" style={{ borderTop: '1px solid var(--axt-divider)' }}>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.35em] block mb-1" style={{ color: 'var(--axt-gold)' }}>{t.attribution}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.3em]" style={{ color: 'var(--axt-text-faint)' }}>{t.org}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Fellowship Teaser ── */}
       <section
         ref={fellowshipRef}
