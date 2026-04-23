@@ -151,24 +151,29 @@ const HubDashboard = () => {
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [progressStats, setProgressStats] = useState({ completed: 0, total: 0 });
+  const [resumeCourse, setResumeCourse] = useState<{ course_id: string; phase_number: string; updated_at: string } | null>(null);
   const heroRef = useReveal();
 
   useEffect(() => {
     if (!user) return;
 
-    supabase.from("profiles").select("display_name").eq("user_id", user.id).single()
+    supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle()
       .then(({ data }) => setDisplayName(data?.display_name ?? null));
 
     supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
       .then(({ data }) => setIsAdmin((data?.length ?? 0) > 0));
 
-    supabase.from("course_progress").select("status").eq("user_id", user.id)
+    supabase.from("course_progress").select("course_id,phase_number,status,updated_at").eq("user_id", user.id)
       .then(({ data }) => {
         const items = data ?? [];
         setProgressStats({
           completed: items.filter((c) => c.status === "completed").length,
           total: items.length,
         });
+        const inProgress = items
+          .filter((c) => c.status === "in_progress")
+          .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+        setResumeCourse(inProgress[0] ?? null);
       });
   }, [user]);
 
@@ -219,6 +224,22 @@ const HubDashboard = () => {
                 />
               </div>
             </div>
+          )}
+
+          {/* Resume where you left off */}
+          {resumeCourse && (
+            <Link
+              to="/hub/hanna"
+              className="block p-6 mb-12 reveal-target transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
+              style={{ background: 'var(--axt-carbon)', border: '1px solid var(--axt-gold)', borderLeft: '3px solid var(--axt-gold-bright)' }}
+            >
+              <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>
+                Resume where you left off · Phase {resumeCourse.phase_number}
+              </span>
+              <h3 className="font-display text-2xl tracking-wider" style={{ color: 'var(--axt-ivory)' }}>
+                Continue your learning path →
+              </h3>
+            </Link>
           )}
 
           {/* Learning Path Cards */}
