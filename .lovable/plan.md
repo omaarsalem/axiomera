@@ -1,88 +1,179 @@
 
 
-## New Pages, Improvements & Enhancements
+## Full Website Review + 100 Feature Roadmap
 
-### A. New Pages
-
-**1. Case Studies / Portfolio (`/work`)**
-A page showcasing AXT's project work — anonymized case studies with problem/approach/outcome structure. Builds credibility with prospective clients. Each case study as a card with sector tag (Finance, Healthcare, Government), service pillar badge, and key metrics.
-
-**2. Team / About (`/about`)**
-A dedicated About page (separate from the homepage section) with team bios, company timeline, and values. Positions AXT as a serious firm with named senior practitioners — reinforces the "Senior Delivery" promise.
-
-**3. Blog / Insights (`/insights`)**
-A content hub for thought leadership — cybersecurity advisories, governance guidance, IT strategy articles. Stored in the database, with an admin interface in the Hub. Drives SEO and positions AXT as an authority.
-
-**4. FAQ (`/faq`)**
-Common questions about services, engagement models, the Fellowship programme. Reduces friction for prospects deciding whether to reach out. Uses accordion components.
-
-**5. Careers (`/careers`)**
-Separate from the Fellowship — a page for professional hires. Even if there are no current openings, it signals growth and ambition. Can include a "Register interest" form wired to the database.
+A complete audit of the AXT site as it stands today, followed by 100 prioritised enhancements grouped by theme. Approve the plan and I'll execute in waves (you can also pick specific waves to ship first).
 
 ---
 
-### B. Hub Enhancements
+### Current State Audit
 
-**6. Course Progress Tracking**
-Add a `course_progress` table in the database. Each course card gets a status toggle (Not Started / In Progress / Completed). The Hub dashboard shows an overall progress bar and phase completion percentage. Fellows can see how far they've come.
+**Strengths**
+- Strong, consistent brand system (Void/Gold, Bebas/DM Mono/Cormorant, zero radius, grain overlay)
+- Solid page coverage: Home, Services, About, Fellowship, Work, Insights, FAQ, Careers, Contact, Hub + sub-pages
+- Auth, RLS, profiles, roles, course progress, enquiries, careers leads, blog posts schema in place
+- Shared `useReveal` hook, BackToTop, CookieConsent, SEO meta + sitemap
 
-**7. Password Reset Flow**
-Add a "Forgot password?" link on the Hub login page that triggers a password reset email via the auth system. Essential for real users.
-
-**8. Fellow Profile Page (`/hub/profile`)**
-A simple page where fellows can see their email, update their display name, and view their progress stats (courses completed, current phase, streak).
-
-**9. Admin Dashboard (`/hub/admin`)**
-For AXT staff — view all fellows, their progress, and submitted enquiries from the contact form. Protected by a role-based check (admin role in a `user_roles` table).
-
----
-
-### C. UX & Design Improvements
-
-**10. Page Transition Animations**
-Add fade/slide transitions between routes using React Router + CSS. Gives the site a polished, app-like feel consistent with the premium brand.
-
-**11. Loading Skeleton States**
-Replace the plain "Loading..." text in the Hub with skeleton shimmer components matching the card layouts. More professional.
-
-**12. Back-to-Top Button**
-A subtle gold arrow that appears after scrolling past the fold. Useful on long pages like Services and HannaPath.
-
-**13. Cookie Consent Banner**
-If targeting UK/EU users (Leeds, London, Cairo), a minimal GDPR cookie consent banner is expected. Ghost-style button, dismissible, stores preference in localStorage.
-
-**14. Dark/Light Mode Toggle** *(optional — may conflict with brand)*
-The AXT brand is fundamentally dark. Skip this unless explicitly requested.
+**Gaps**
+- No course progress UI on `HannaPath` (table exists, unused)
+- No blog post editor in admin — `blog_posts` is read-only from the app
+- No signup flow — admins must create users manually
+- No file/image storage, no edge functions, no email notifications on form submits
+- Minimal accessibility (focus rings, skip links, aria labels)
+- No analytics, no rate limiting on public forms, no honeypot/captcha
+- No search, no filtering on Work/Insights, no pagination
+- Single learning path hardcoded in TSX — not data-driven
+- No testimonials, no client logos, no pricing/engagement model page
+- No multilingual support (Cairo audience would benefit from Arabic)
+- No PWA, no offline, no print stylesheets
 
 ---
 
-### D. Technical Improvements
+### 100 Features — Grouped by Wave
 
-**15. Image/Asset Optimization**
-Add Open Graph meta images for social sharing. When someone shares axt.tech on LinkedIn or Twitter, it should show a branded preview card — not a blank thumbnail.
+**Wave 1 — Hub Core (10)**
+1. Course progress toggles on HannaPath (Not started / In progress / Completed)
+2. Per-phase progress bars + overall completion %
+3. Streak counter (consecutive days with progress updates)
+4. "Last activity" timestamp on profile
+5. Resume-where-you-left-off card on Hub dashboard
+6. Course notes field per course (private to fellow)
+7. Bookmarks/favorites for courses
+8. Estimated time remaining (based on hours-per-course)
+9. Certificate upload per course (storage bucket)
+10. Downloadable progress report (PDF)
 
-**16. Sitemap & robots.txt**
-Generate a sitemap.xml for SEO. The existing robots.txt exists but may need updating to reference the sitemap.
+**Wave 2 — Hub Admin & Content (10)**
+11. Blog post editor (create/edit/publish/unpublish) in `/hub/admin`
+12. Rich-text editor (Tiptap) for posts
+13. Cover image upload for posts (storage)
+14. Draft autosave
+15. Enquiries table view with status (new/contacted/closed)
+16. Career interests table view + status
+17. Fellow management (invite, deactivate, assign role)
+18. Send invite email via edge function (Resend)
+19. CSV export for enquiries, career interests, fellows
+20. Admin activity log
 
-**17. Analytics Integration**
-Add lightweight, privacy-respecting analytics (e.g., Plausible or a simple page-view tracker via database) to understand traffic patterns.
+**Wave 3 — Auth & Account (10)**
+21. Public signup (gated by invite code) for fellowship onboarding
+22. Magic-link login option
+23. Google OAuth
+24. Email verification banner + resend
+25. Update email flow
+26. Two-factor auth (TOTP)
+27. Session list + revoke
+28. Account deletion (self-service)
+29. Avatar upload on profile
+30. Display-name + bio + timezone fields
+
+**Wave 4 — Learning Paths Engine (10)**
+31. Move learning paths to DB (`learning_paths`, `phases`, `courses` tables)
+32. Path catalogue page `/hub/paths`
+33. Multi-path enrolment per fellow
+34. New "IT Path" seeded
+35. Admin UI to create/edit paths, phases, courses
+36. Course tags (platform, level, hours, language)
+37. Reorder courses via drag-and-drop
+38. Prerequisites between courses
+39. Cohort grouping (Cohort 01, 02…)
+40. Cohort leaderboard (opt-in)
+
+**Wave 5 — Public Site Content (10)**
+41. Pricing / engagement models page (`/services/engagement`)
+42. Industries page (`/industries`) — Finance, Health, Government, Education
+43. Client logos strip on Home
+44. Testimonials section (DB-backed)
+45. Detailed case study sub-pages (`/work/:slug`)
+46. Methodology page (how AXT delivers)
+47. Trust & compliance page (ISO/Cyber Essentials/GDPR)
+48. Press / media kit page
+49. Partners page
+50. Events page (workshops, talks)
+
+**Wave 6 — Lead Gen & CRM (10)**
+51. Honeypot + rate limit on Contact + Careers forms
+52. hCaptcha integration
+53. Email notification to `hello@axt.tech` on form submit (Resend edge function)
+54. Auto-reply to submitter
+55. Newsletter signup (footer + post-CTA)
+56. Lead scoring (simple rules in admin)
+57. UTM capture on form submissions
+58. Calendly-style "Book a discovery call" embed
+59. Service-specific intake forms (Infra / Cyber / Governance)
+60. Fellowship application form (multi-step)
+
+**Wave 7 — UX, Motion & Polish (10)**
+61. Route transition wrapper (fade + 8px slide)
+62. Skeleton loaders for Hub, Insights, Work
+63. Sticky service-pillar nav on Services page
+64. Animated counter for stats (intersection-triggered)
+65. Magnetic gold cursor on CTA buttons (desktop only)
+66. Marquee variants (paused on hover)
+67. Section progress dots (right rail) on long pages
+68. Smooth-scroll TOC on Insights articles
+69. Image lightbox for case study assets
+70. Empty-state illustrations matching brand
+
+**Wave 8 — Performance, A11y, SEO (10)**
+71. Skip-to-content link
+72. Visible focus rings using `--axt-gold`
+73. Aria labels + landmarks audit
+74. Reduced-motion respect across all reveals
+75. Lighthouse pass 95+ (lazy images, font-display swap)
+76. Per-page meta + canonical via `react-helmet-async`
+77. JSON-LD per article + per case study
+78. RSS feed for `/insights`
+79. Auto-generated sitemap from DB
+80. 404 + 500 styled pages (500 added)
+
+**Wave 9 — Internationalisation & Brand Reach (10)**
+81. i18n scaffold (`react-i18next`) — EN default, AR added
+82. RTL support for Arabic
+83. Language switcher in nav + footer
+84. Localised meta tags + hreflang
+85. Currency-aware copy where relevant
+86. Region landing pages (`/cairo`, `/leeds`, `/london`)
+87. Localised contact info per region
+88. Date/time formatting via `date-fns` locales
+89. Translated Fellowship application
+90. Translated FAQ
+
+**Wave 10 — Platform, Ops & Trust (10)**
+91. Plausible-style first-party analytics (page_views table + edge function)
+92. Server-side error logging (edge function → table)
+93. Health-check page `/status`
+94. Maintenance mode flag (admin toggle)
+95. Feature flags table + provider
+96. Audit log on sensitive admin actions
+97. Backup/export of all admin data (zipped CSV)
+98. Storage bucket policies for avatars, post covers, certificates
+99. Edge function: weekly digest email to admins (new leads, new enquiries)
+100. PWA install (manifest, service worker, offline 404)
 
 ---
 
-### Recommended Priority Order
+### Technical Approach
 
-| Priority | Item | Impact |
-|----------|------|--------|
-| 1 | Course progress tracking (Hub) | High — core fellowship UX |
-| 2 | Password reset flow | High — essential for real users |
-| 3 | Case Studies page | High — client conversion |
-| 4 | Admin dashboard | High — operational need |
-| 5 | Blog/Insights page | Medium — SEO + authority |
-| 6 | Fellow profile page | Medium — personalization |
-| 7 | FAQ page | Medium — reduces friction |
-| 8 | OG meta images | Medium — social sharing |
-| 9 | Page transitions | Low — polish |
-| 10 | Cookie consent | Low — compliance |
+- **Database**: new tables — `learning_paths`, `phases`, `courses`, `enrolments`, `notes`, `bookmarks`, `certificates`, `testimonials`, `case_studies`, `industries`, `events`, `partners`, `newsletter_subscribers`, `lead_status`, `feature_flags`, `audit_log`, `page_views`, `error_log`. All with RLS following the existing `has_role` pattern.
+- **Storage buckets**: `avatars` (public), `post-covers` (public), `certificates` (private), `case-study-assets` (public).
+- **Edge functions**: `send-enquiry-email`, `send-careers-email`, `send-invite`, `weekly-digest`, `track-pageview`, `log-error`. All using `Resend` (will request API key when we hit that wave).
+- **Libraries to add**: `react-helmet-async`, `react-i18next`, `@tiptap/react` + extensions, `date-fns`, `dompurify`. No UI library swaps.
+- **Design system**: every new surface uses Void/Gold tokens, zero radius, DM Mono labels, Bebas headings, grain overlay, scroll reveals via shared `useReveal`.
 
-Let me know which items you want to build, or say "all" and I'll work through them in priority order.
+---
+
+### Recommended Execution Order
+
+Ship in waves so you can review and steer:
+
+1. **Wave 1 + 2** (Hub Core + Admin/Content) — biggest internal value
+2. **Wave 3** (Auth & Account) — unblocks self-service onboarding
+3. **Wave 6** (Lead Gen) + **Wave 8** (A11y/SEO) — biggest commercial impact
+4. **Wave 5** (Public content) + **Wave 7** (Polish)
+5. **Wave 4** (Paths engine) — once you have 2+ paths to model
+6. **Wave 9** (i18n) — when ready for Arabic launch
+7. **Wave 10** (Ops/Trust) — hardening before scale
+
+Reply with **"all"** to run waves in order, **"wave N"** to start a specific one, or list individual feature numbers to cherry-pick.
 
