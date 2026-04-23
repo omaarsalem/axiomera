@@ -1,36 +1,39 @@
 import { ReactNode, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SUPPORTED_LANGS, type Lang } from "@/i18n";
 
-const isLang = (v: string | undefined): v is Lang =>
-  !!v && (SUPPORTED_LANGS as readonly string[]).includes(v);
+const LANG_RE = /^\/(ar|en)(?=\/|$)/;
+
+const detectLangFromPath = (pathname: string): Lang => {
+  const m = pathname.match(LANG_RE);
+  if (m && (SUPPORTED_LANGS as readonly string[]).includes(m[1])) return m[1] as Lang;
+  return "en";
+};
 
 /**
- * Reads :lang from the URL, syncs i18next + <html lang/dir>, and exposes a
- * helper to switch language while preserving the rest of the path.
+ * Reads locale from the URL prefix, syncs i18next + <html lang/dir>.
  */
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const { lang } = useParams<{ lang?: string }>();
   const { i18n } = useTranslation();
   const location = useLocation();
+  const lang = detectLangFromPath(location.pathname);
 
   useEffect(() => {
-    const next: Lang = isLang(lang) ? lang : "en";
-    if (i18n.language !== next) i18n.changeLanguage(next);
-    document.documentElement.lang = next;
-    document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
-  }, [lang, i18n, location.pathname]);
+    if (i18n.language !== lang) i18n.changeLanguage(lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  }, [lang, i18n]);
 
   return <>{children}</>;
 };
 
-export const useLang = () => {
-  const { lang } = useParams<{ lang?: string }>();
-  return isLang(lang) ? lang : "en";
+export const useLang = (): Lang => {
+  const location = useLocation();
+  return detectLangFromPath(location.pathname);
 };
 
-/** Build a path with the current locale prefix (e.g. "/services" -> "/ar/services"). */
+/** Build a path with the current locale prefix. "/services" -> "/ar/services". */
 export const useLocalePath = () => {
   const lang = useLang();
   return (path: string) => {
@@ -40,14 +43,14 @@ export const useLocalePath = () => {
   };
 };
 
-/** Switch the active language while keeping the rest of the URL. */
+/** Switch language while preserving the rest of the URL. */
 export const useSwitchLang = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const current = useLang();
   return (target: Lang) => {
     if (target === current) return;
-    const stripped = location.pathname.replace(/^\/(en|ar)(?=\/|$)/, "") || "/";
+    const stripped = location.pathname.replace(LANG_RE, "") || "/";
     const next = target === "en" ? stripped : `/${target}${stripped === "/" ? "" : stripped}`;
     navigate(next + location.search + location.hash);
   };
