@@ -37,6 +37,11 @@ const Insights = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Insights — Field notes from AXT"
+        description="Practitioner-grade analysis on cybersecurity, governance, and IT infrastructure from the AXT team."
+        path="/insights"
+      />
       {/* Hero */}
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">

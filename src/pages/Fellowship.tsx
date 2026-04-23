@@ -13,6 +13,11 @@ const Fellowship = () => {
 
   return (
     <Layout>
+      <Seo
+        title="AXT Fellowship — Where Careers Begin"
+        description="A free, project-based fellowship for ambitious students and graduates. Five fellows per cohort. Real client work, senior mentorship, lifetime alumni access."
+        path="/fellowship"
+      />
       {/* Hero */}
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">

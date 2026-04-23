@@ -101,6 +101,11 @@ const Work = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Work — Selected engagements"
+        description="A discreet view of the IT infrastructure, cybersecurity, and governance work AXT delivers for enterprise and institutional clients."
+        path="/work"
+      />
       {/* Hero */}
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">

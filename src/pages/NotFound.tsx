@@ -12,6 +12,7 @@ const NotFound = () => {
 
   return (
     <Layout>
+      <Seo title="Page not found (404)" description="The page you requested does not exist." path={location.pathname} noIndex />
       <section
         className="min-h-[80vh] flex items-center justify-center px-6 md:px-12"
         style={{ background: 'var(--axt-void)' }}

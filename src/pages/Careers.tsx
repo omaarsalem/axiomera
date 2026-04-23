@@ -64,6 +64,11 @@ const Careers = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Careers — Join AXT"
+        description="Senior practitioners only. Register your interest for engineering, security, and advisory roles at AXT across Cairo, Leeds, and London."
+        path="/careers"
+      />
       {/* Hero */}
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
