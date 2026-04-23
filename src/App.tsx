@@ -61,7 +61,15 @@ const App = () => (
           <RouteTransition>
             <Routes>
               <Route
-                path="/:lang(ar|en)/*"
+                path="/ar/*"
+                element={
+                  <LanguageProvider>
+                    <AppRoutes />
+                  </LanguageProvider>
+                }
+              />
+              <Route
+                path="/en/*"
                 element={
                   <LanguageProvider>
                     <AppRoutes />
