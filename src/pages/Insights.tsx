@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 interface BlogPost {
   id: string;
@@ -102,6 +103,13 @@ const Insights = () => {
               </p>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <NewsletterSignup source="insights" />
         </div>
       </section>
 
