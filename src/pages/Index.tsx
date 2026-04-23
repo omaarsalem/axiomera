@@ -3,6 +3,8 @@ import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import MagneticButton from "@/components/MagneticButton";
 
 const tickerItems = [
   "AXT Infrastructure",
@@ -132,12 +134,12 @@ const Index = () => {
             "Built to be your only call."
           </p>
           <div className="reveal-target reveal reveal-delay-3 flex flex-wrap gap-4">
-            <Link to="/services" className="btn-axt btn-axt-gold">
+            <MagneticButton to="/services" className="btn-axt btn-axt-gold inline-block">
               Our Services
-            </Link>
-            <Link to="/contact" className="btn-axt btn-axt-ghost">
+            </MagneticButton>
+            <MagneticButton to="/contact" className="btn-axt btn-axt-ghost inline-block">
               Brief Us
-            </Link>
+            </MagneticButton>
           </div>
         </div>
         {/* Scroll indicator */}
@@ -191,7 +193,11 @@ const Index = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-px reveal-target" style={{ background: 'var(--axt-divider)' }}>
                 {stats.map((s) => (
                   <div key={s.label} className="p-6 text-center" style={{ background: 'var(--axt-obsidian)' }}>
-                    <span className="font-display text-4xl block mb-2" style={{ color: 'var(--axt-gold-bright)' }}>{s.value}</span>
+                    <AnimatedCounter
+                      value={s.value}
+                      className="font-display text-4xl block mb-2"
+                      style={{ color: 'var(--axt-gold-bright)' }}
+                    />
                     <span className="font-mono text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--axt-text-dim)' }}>{s.label}</span>
                   </div>
                 ))}

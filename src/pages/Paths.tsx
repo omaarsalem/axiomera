@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
 import useReveal from "@/hooks/useReveal";
 import { supabase } from "@/integrations/supabase/client";
+import { SkeletonPathRow } from "@/components/Skeletons";
 
 interface PathRow {
   id: string;
@@ -28,6 +29,7 @@ const Paths = () => {
   const [paths, setPaths] = useState<PathRow[]>([]);
   const [stats, setStats] = useState<Record<string, PathStats>>({});
   const [isAdmin, setIsAdmin] = useState(false);
+  const [pathsLoading, setPathsLoading] = useState(true);
   const heroRef = useReveal();
 
   useEffect(() => {
@@ -70,6 +72,7 @@ const Paths = () => {
         next[p.id] = { phases: phaseIds.length, courses: slugs.length, completed };
       });
       setStats(next);
+      setPathsLoading(false);
     })();
   }, [user]);
 
@@ -103,7 +106,11 @@ const Paths = () => {
             </p>
           </div>
 
-          {paths.length === 0 ? (
+          {pathsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px]" style={{ background: "var(--axt-ghost-border)" }}>
+              {[1, 2, 3].map((i) => <SkeletonPathRow key={i} />)}
+            </div>
+          ) : paths.length === 0 ? (
             <p className="font-mono text-sm" style={{ color: "var(--axt-text-dim)" }}>No paths available.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal-target"
