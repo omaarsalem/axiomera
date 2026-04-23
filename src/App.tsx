@@ -9,6 +9,8 @@ import Fellowship from "./pages/Fellowship.tsx";
 import Contact from "./pages/Contact.tsx";
 import Hub from "./pages/Hub.tsx";
 import HannaPath from "./pages/HannaPath.tsx";
+import Paths from "./pages/Paths.tsx";
+import LearningPath from "./pages/LearningPath.tsx";
 import HubProfile from "./pages/HubProfile.tsx";
 import HubAdmin from "./pages/HubAdmin.tsx";
 import Work from "./pages/Work.tsx";
@@ -42,6 +44,8 @@ const App = () => (
             <Route path="/insights" element={<Insights />} />
             <Route path="/insights/:slug" element={<InsightPost />} />
             <Route path="/hub" element={<Hub />} />
+            <Route path="/hub/paths" element={<Paths />} />
+            <Route path="/hub/paths/:slug" element={<LearningPath />} />
             <Route path="/hub/hanna" element={<HannaPath />} />
             <Route path="/hub/profile" element={<HubProfile />} />
             <Route path="/hub/admin" element={<HubAdmin />} />

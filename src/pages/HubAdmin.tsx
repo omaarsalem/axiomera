@@ -6,6 +6,7 @@ import SectionLabel from "@/components/SectionLabel";
 import { supabase } from "@/integrations/supabase/client";
 import useReveal from "@/hooks/useReveal";
 import RichTextEditor from "@/components/hub/RichTextEditor";
+import PathsAdmin from "@/components/hub/PathsAdmin";
 import { logAdminAction, downloadCsv } from "@/lib/auditLog";
 
 type LeadStatus = "new" | "contacted" | "closed";
@@ -57,7 +58,7 @@ interface ActivityRow {
   created_at: string;
 }
 
-type Tab = "posts" | "enquiries" | "careers" | "activity";
+type Tab = "posts" | "paths" | "enquiries" | "careers" | "activity";
 
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
@@ -168,6 +169,7 @@ const HubAdmin = () => {
           <div className="reveal-target flex flex-wrap gap-0 mb-12" style={{ borderBottom: "1px solid var(--axt-divider)" }}>
             {([
               ["posts", `Posts (${posts.length})`],
+              ["paths", `Paths`],
               ["enquiries", `Enquiries (${enquiries.length})`],
               ["careers", `Careers (${careerInterests.length})`],
               ["activity", `Activity`],
@@ -235,6 +237,9 @@ const HubAdmin = () => {
               savingMsg={savingMsg}
             />
           )}
+
+          {/* PATHS */}
+          {tab === "paths" && <PathsAdmin />}
 
           {/* ENQUIRIES */}
           {tab === "enquiries" && (

@@ -166,13 +166,27 @@ const HubLogin = () => {
   );
 };
 
+interface PathCard {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  fellow_name: string | null;
+  duration_label: string | null;
+  cost_label: string | null;
+  is_published: boolean;
+  phaseCount: number;
+  courseCount: number;
+}
+
 const HubDashboard = () => {
   const { user, signOut } = useAuth();
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [progressStats, setProgressStats] = useState({ completed: 0, total: 0 });
-  const [resumeCourse, setResumeCourse] = useState<{ course_id: string; phase_number: string; updated_at: string } | null>(null);
+  const [resumeCourse, setResumeCourse] = useState<{ course_id: string; phase_number: string; path_slug: string } | null>(null);
+  const [paths, setPaths] = useState<PathCard[]>([]);
   const heroRef = useReveal();
 
   const emailVerified = !!user?.email_confirmed_at;
@@ -188,18 +202,60 @@ const HubDashboard = () => {
     supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
       .then(({ data }) => setIsAdmin((data?.length ?? 0) > 0));
 
-    supabase.from("course_progress").select("course_id,phase_number,status,updated_at").eq("user_id", user.id)
-      .then(({ data }) => {
-        const items = data ?? [];
-        setProgressStats({
-          completed: items.filter((c) => c.status === "completed").length,
-          total: items.length,
-        });
-        const inProgress = items
-          .filter((c) => c.status === "in_progress")
-          .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
-        setResumeCourse(inProgress[0] ?? null);
+    (async () => {
+      // Load paths + counts
+      const { data: pathRows } = await supabase
+        .from("learning_paths")
+        .select("id,slug,title,subtitle,fellow_name,duration_label,cost_label,is_published")
+        .order("sort_order");
+      const { data: phaseRows } = await supabase.from("phases").select("id,path_id");
+      const { data: courseRows } = await supabase.from("courses").select("id,slug,phase_id");
+
+      const phasesByPath: Record<string, string[]> = {};
+      (phaseRows ?? []).forEach((p) => { (phasesByPath[p.path_id] ||= []).push(p.id); });
+      const slugByCourseId: Record<string, string> = {};
+      const phaseByCourseSlug: Record<string, string> = {};
+      const pathSlugByCourseSlug: Record<string, string> = {};
+      const coursesByPhase: Record<string, string[]> = {};
+      (courseRows ?? []).forEach((c) => {
+        (coursesByPhase[c.phase_id] ||= []).push(c.slug);
       });
+      (pathRows ?? []).forEach((p) => {
+        (phasesByPath[p.id] ?? []).forEach((phid) => {
+          (coursesByPhase[phid] ?? []).forEach((slug) => {
+            pathSlugByCourseSlug[slug] = p.slug;
+          });
+        });
+      });
+
+      setPaths((pathRows ?? []).map((p) => ({
+        ...p,
+        phaseCount: (phasesByPath[p.id] ?? []).length,
+        courseCount: (phasesByPath[p.id] ?? []).reduce((sum, phid) => sum + (coursesByPhase[phid]?.length ?? 0), 0),
+      })));
+
+      // Load progress
+      const { data: progress } = await supabase
+        .from("course_progress")
+        .select("course_id,phase_number,status,updated_at")
+        .eq("user_id", user.id);
+      const items = progress ?? [];
+      setProgressStats({
+        completed: items.filter((c) => c.status === "completed").length,
+        total: items.length,
+      });
+      const inProgress = items
+        .filter((c) => c.status === "in_progress")
+        .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+      const top = inProgress[0];
+      if (top) {
+        setResumeCourse({
+          course_id: top.course_id,
+          phase_number: top.phase_number,
+          path_slug: pathSlugByCourseSlug[top.course_id] ?? "hanna",
+        });
+      }
+    })();
   }, [user]);
 
   const resendVerification = async () => {
@@ -233,6 +289,7 @@ const HubDashboard = () => {
             <div className="flex items-center gap-3">
               {avatarUrl && <img src={avatarUrl} alt="" className="w-8 h-8 object-cover" style={{ border: "1px solid var(--axt-divider)" }} />}
               {isAdmin && <Link to="/hub/admin" className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0">Admin</Link>}
+              <Link to="/hub/paths" className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0">Paths</Link>
               <Link to="/hub/profile" className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0">Profile</Link>
               <button onClick={signOut} className="btn-axt btn-axt-ghost !py-2 !px-6 shrink-0">Sign Out</button>
             </div>
@@ -259,7 +316,8 @@ const HubDashboard = () => {
           )}
 
           {resumeCourse && (
-            <Link to="/hub/hanna" className="block p-6 mb-12 reveal-target transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
+            <Link to={`/hub/paths/${resumeCourse.path_slug}`}
+              className="block p-6 mb-12 reveal-target transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
               style={{ background: "var(--axt-carbon)", border: "1px solid var(--axt-gold)", borderLeft: "3px solid var(--axt-gold-bright)" }}>
               <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: "var(--axt-gold)" }}>
                 Resume where you left off · Phase {resumeCourse.phase_number}
@@ -268,25 +326,45 @@ const HubDashboard = () => {
             </Link>
           )}
 
-          <div className="mb-8 reveal-target">
-            <h2 className="font-display text-3xl tracking-wider mb-8" style={{ color: "var(--axt-ivory)" }}>Learning Paths</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal-target" style={{ background: "var(--axt-ghost-border)" }}>
-            <Link to="/hub/hanna" className="block p-8 transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]" style={{ background: "var(--axt-carbon)" }}>
-              <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: "var(--axt-gold)" }}>Fellow · Hanna</span>
-              <h3 className="font-display text-3xl tracking-wider mb-3" style={{ color: "var(--axt-ivory)" }}>Hanna's Learning Path</h3>
-              <p className="font-mono text-xs mb-6" style={{ color: "var(--axt-text-dim)" }}>Business Administration & Digital Marketing</p>
-              <div className="grid grid-cols-2 gap-4">
-                {[{ value: "8", label: "Phases" }, { value: "24+", label: "Courses" }, { value: "8", label: "Months" }, { value: "£0", label: "Cost" }].map((stat) => (
-                  <div key={stat.label}>
-                    <span className="font-display text-2xl" style={{ color: "var(--axt-gold-bright)" }}>{stat.value}</span>
-                    <span className="font-mono text-[9px] uppercase tracking-[0.4em] block mt-1" style={{ color: "var(--axt-text-faint)" }}>{stat.label}</span>
-                  </div>
-                ))}
-              </div>
+          <div className="mb-8 reveal-target flex items-center justify-between flex-wrap gap-4">
+            <h2 className="font-display text-3xl tracking-wider" style={{ color: "var(--axt-ivory)" }}>Learning Paths</h2>
+            <Link to="/hub/paths" className="font-mono text-[10px] uppercase tracking-[0.4em]" style={{ color: "var(--axt-gold)" }}>
+              View all →
             </Link>
           </div>
+
+          {paths.length === 0 ? (
+            <p className="font-mono text-sm" style={{ color: "var(--axt-text-dim)" }}>No paths available yet.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal-target" style={{ background: "var(--axt-ghost-border)" }}>
+              {paths.filter((p) => p.is_published).slice(0, 6).map((p) => (
+                <Link key={p.id} to={`/hub/paths/${p.slug}`}
+                  className="block p-8 transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
+                  style={{ background: "var(--axt-carbon)" }}>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: "var(--axt-gold)" }}>
+                    {p.fellow_name ? `Fellow · ${p.fellow_name}` : "Open Path"}
+                  </span>
+                  <h3 className="font-display text-3xl tracking-wider mb-3" style={{ color: "var(--axt-ivory)" }}>{p.title}</h3>
+                  {p.subtitle && (
+                    <p className="font-mono text-xs mb-6" style={{ color: "var(--axt-text-dim)" }}>{p.subtitle}</p>
+                  )}
+                  <div className="grid grid-cols-2 gap-4">
+                    {[
+                      { value: `${p.phaseCount}`, label: "Phases" },
+                      { value: `${p.courseCount}`, label: "Courses" },
+                      { value: p.duration_label ?? "—", label: "Duration" },
+                      { value: p.cost_label ?? "£0", label: "Cost" },
+                    ].map((stat) => (
+                      <div key={stat.label}>
+                        <span className="font-display text-2xl" style={{ color: "var(--axt-gold-bright)" }}>{stat.value}</span>
+                        <span className="font-mono text-[9px] uppercase tracking-[0.4em] block mt-1" style={{ color: "var(--axt-text-faint)" }}>{stat.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </Layout>

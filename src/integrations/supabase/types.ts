@@ -245,6 +245,69 @@ export type Database = {
         }
         Relationships: []
       }
+      courses: {
+        Row: {
+          created_at: string
+          estimated_hours: number
+          id: string
+          language: string | null
+          level: string | null
+          phase_id: string
+          platform: string
+          prerequisite_course_id: string | null
+          slug: string
+          sort_order: number
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          estimated_hours?: number
+          id?: string
+          language?: string | null
+          level?: string | null
+          phase_id: string
+          platform: string
+          prerequisite_course_id?: string | null
+          slug: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          estimated_hours?: number
+          id?: string
+          language?: string | null
+          level?: string | null
+          phase_id?: string
+          platform?: string
+          prerequisite_course_id?: string | null
+          slug?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "courses_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "phases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "courses_prerequisite_course_id_fkey"
+            columns: ["prerequisite_course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enquiries: {
         Row: {
           admin_notes: string | null
@@ -277,6 +340,127 @@ export type Database = {
           status?: string
         }
         Relationships: []
+      }
+      enrolments: {
+        Row: {
+          enrolled_at: string
+          id: string
+          path_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          enrolled_at?: string
+          id?: string
+          path_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          enrolled_at?: string
+          id?: string
+          path_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enrolments_path_id_fkey"
+            columns: ["path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_paths"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_paths: {
+        Row: {
+          cost_label: string | null
+          created_at: string
+          description: string | null
+          duration_label: string | null
+          fellow_name: string | null
+          id: string
+          is_published: boolean
+          slug: string
+          sort_order: number
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cost_label?: string | null
+          created_at?: string
+          description?: string | null
+          duration_label?: string | null
+          fellow_name?: string | null
+          id?: string
+          is_published?: boolean
+          slug: string
+          sort_order?: number
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cost_label?: string | null
+          created_at?: string
+          description?: string | null
+          duration_label?: string | null
+          fellow_name?: string | null
+          id?: string
+          is_published?: boolean
+          slug?: string
+          sort_order?: number
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      phases: {
+        Row: {
+          created_at: string
+          goal: string | null
+          id: string
+          months: string | null
+          number: string
+          path_id: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          goal?: string | null
+          id?: string
+          months?: string | null
+          number: string
+          path_id: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          goal?: string | null
+          id?: string
+          months?: string | null
+          number?: string
+          path_id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "phases_path_id_fkey"
+            columns: ["path_id"]
+            isOneToOne: false
+            referencedRelation: "learning_paths"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
