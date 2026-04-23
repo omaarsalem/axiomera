@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
+import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import { supabase } from "@/integrations/supabase/client";
 import useReveal from "@/hooks/useReveal";
@@ -270,6 +271,7 @@ const HubDashboard = () => {
 
   return (
     <Layout>
+      <Seo title="Fellowship Hub" description="The AXT Fellowship Hub — your private learning portal." path="/hub" noIndex />
       <section ref={heroRef} className="min-h-screen px-6 md:px-12 py-24 md:py-32" style={{ background: "var(--axt-void)" }}>
         <div className="max-w-[1400px] mx-auto">
           {!emailVerified && (

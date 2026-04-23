@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Layout from "@/components/Layout";
+import Seo from "@/components/Seo";
 import useReveal from "@/hooks/useReveal";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -64,6 +65,21 @@ const InsightPost = () => {
 
   return (
     <Layout>
+      <Seo
+        title={post.title}
+        description={post.excerpt || `${post.title} — by ${post.author_name} on AXT Insights.`}
+        path={`/insights/${slug}`}
+        type="article"
+        image={post.cover_image_url || undefined}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: post.title,
+          author: { "@type": "Person", name: post.author_name },
+          datePublished: post.published_at || post.created_at,
+          image: post.cover_image_url || undefined,
+        }}
+      />
       <article>
         <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: "var(--axt-void)" }}>
           <div className="max-w-3xl mx-auto">

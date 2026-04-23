@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";
@@ -81,6 +82,11 @@ const Services = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Services — Infrastructure, Cyber, Governance"
+        description="AXT delivers IT infrastructure, cybersecurity, and governance under one roof. Senior-led engagement models: project, retainer, fractional CISO."
+        path="/services"
+      />
       {/* Hero */}
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">

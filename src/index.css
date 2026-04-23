@@ -84,6 +84,33 @@
   }
 }
 
+/* Skip-to-content link (WCAG 2.4.1) */
+.skip-to-content {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  z-index: 10000;
+  background: var(--axt-gold);
+  color: var(--axt-void);
+  padding: 12px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.skip-to-content:focus {
+  left: 16px;
+  top: 16px;
+  outline: 2px solid var(--axt-ivory);
+  outline-offset: 2px;
+}
+
+/* Visible focus for keyboard users */
+*:focus-visible {
+  outline: 2px solid var(--axt-gold);
+  outline-offset: 2px;
+}
+
 /* Section label line */
 .section-label-line {
   flex: 1;

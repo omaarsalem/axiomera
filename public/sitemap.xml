@@ -9,4 +9,5 @@
   <url><loc>https://axt.tech/careers</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://axt.tech/faq</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://axt.tech/contact</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://axt.tech/hub</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
 </urlset>

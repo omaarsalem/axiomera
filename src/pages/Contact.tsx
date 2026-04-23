@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import { useState, FormEvent } from "react";
@@ -96,6 +97,11 @@ const Contact = () => {
 
   return (
     <Layout>
+      <Seo
+        title="Contact — Make the Call"
+        description="Brief AXT on your IT, cyber, or governance challenge. Cairo · Leeds · London. We respond within one business day."
+        path="/contact"
+      />
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <span className="reveal-target font-mono text-[9px] uppercase tracking-[0.5em] block mb-6" style={{ color: 'var(--axt-gold)' }}>

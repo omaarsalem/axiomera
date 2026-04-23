@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
+import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import useReveal from "@/hooks/useReveal";
 import { supabase } from "@/integrations/supabase/client";
@@ -90,6 +91,7 @@ const Paths = () => {
 
   return (
     <Layout>
+      <Seo title="Learning Paths" description="Curated learning paths for AXT Fellows." path="/hub/paths" noIndex />
       <section ref={heroRef} className="px-6 md:px-12 pt-24 pb-16 md:pt-32 md:pb-24" style={{ background: "var(--axt-void)" }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="flex items-center justify-between mb-12 flex-wrap gap-4">
