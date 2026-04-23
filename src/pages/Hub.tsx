@@ -151,24 +151,29 @@ const HubDashboard = () => {
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [progressStats, setProgressStats] = useState({ completed: 0, total: 0 });
+  const [resumeCourse, setResumeCourse] = useState<{ course_id: string; phase_number: string; updated_at: string } | null>(null);
   const heroRef = useReveal();
 
   useEffect(() => {
     if (!user) return;
 
-    supabase.from("profiles").select("display_name").eq("user_id", user.id).single()
+    supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle()
       .then(({ data }) => setDisplayName(data?.display_name ?? null));
 
     supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
       .then(({ data }) => setIsAdmin((data?.length ?? 0) > 0));
 
-    supabase.from("course_progress").select("status").eq("user_id", user.id)
+    supabase.from("course_progress").select("course_id,phase_number,status,updated_at").eq("user_id", user.id)
       .then(({ data }) => {
         const items = data ?? [];
         setProgressStats({
           completed: items.filter((c) => c.status === "completed").length,
           total: items.length,
         });
+        const inProgress = items
+          .filter((c) => c.status === "in_progress")
+          .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+        setResumeCourse(inProgress[0] ?? null);
       });
   }, [user]);
 
