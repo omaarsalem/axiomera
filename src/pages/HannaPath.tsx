@@ -1,22 +1,18 @@
+import { useState, useEffect, useMemo } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
-import { ExternalLink } from "lucide-react";
 import useReveal from "@/hooks/useReveal";
-
-interface Course {
-  platform: string;
-  title: string;
-  url: string;
-}
+import { supabase } from "@/integrations/supabase/client";
+import CourseCard, { CourseInfo, CourseStatus } from "@/components/hub/CourseCard";
 
 interface Phase {
   number: string;
   title: string;
   months: string;
   goal: string;
-  courses: Course[];
+  courses: CourseInfo[];
 }
 
 const phases: Phase[] = [
@@ -116,32 +112,36 @@ const phases: Phase[] = [
   },
 ];
 
-const CourseCard = ({ course }: { course: Course }) => (
-  <div
-    className="p-6 transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
-    style={{ background: 'var(--axt-carbon)', border: '1px solid var(--axt-ghost-border)' }}
-  >
-    <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
-      {course.platform}
-    </span>
-    <h4 className="font-display text-xl tracking-wider mb-4" style={{ color: 'var(--axt-ivory)' }}>
-      {course.title}
-    </h4>
-    <a
-      href={course.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="btn-axt btn-axt-ghost inline-flex items-center gap-2 !py-2 !px-6"
-    >
-      <span>Free · Start Course</span>
-      <ExternalLink size={12} />
-    </a>
-  </div>
-);
+// Stable course id derived from phase + url (deterministic, idempotent).
+const courseIdFor = (phaseNumber: string, course: CourseInfo) => {
+  const slug = course.url.replace(/^https?:\/\//, "").replace(/[^a-z0-9]+/gi, "-").slice(0, 80).toLowerCase();
+  return `hanna-p${phaseNumber}-${slug}`;
+};
 
-const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
+const ESTIMATED_HOURS_PER_COURSE = 8;
+
+const PhaseSection = ({
+  phase,
+  index,
+  statusMap,
+  bookmarkSet,
+  certSet,
+  notesMap,
+  onStatusChange,
+}: {
+  phase: Phase;
+  index: number;
+  statusMap: Record<string, CourseStatus>;
+  bookmarkSet: Set<string>;
+  certSet: Set<string>;
+  notesMap: Record<string, string>;
+  onStatusChange: (id: string, status: CourseStatus) => void;
+}) => {
   const bgColor = index % 2 === 0 ? 'var(--axt-void)' : 'var(--axt-obsidian)';
   const sectionRef = useReveal();
+
+  const completed = phase.courses.filter((c) => statusMap[courseIdFor(phase.number, c)] === "completed").length;
+  const pct = phase.courses.length ? Math.round((completed / phase.courses.length) * 100) : 0;
 
   return (
     <section ref={sectionRef} className="px-6 md:px-12 py-20 md:py-28" style={{ background: bgColor }}>
@@ -153,16 +153,45 @@ const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
           <h2 className="font-display text-4xl md:text-5xl tracking-wider mb-4" style={{ color: 'var(--axt-ivory)' }}>
             {phase.title}
           </h2>
-          <p className="font-mono text-sm max-w-2xl" style={{ color: 'var(--axt-text-dim)' }}>
+          <p className="font-mono text-sm max-w-2xl mb-6" style={{ color: 'var(--axt-text-dim)' }}>
             {phase.goal}
           </p>
+
+          {/* Phase progress bar */}
+          <div className="max-w-md">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-mono text-[9px] uppercase tracking-[0.4em]" style={{ color: 'var(--axt-text-faint)' }}>
+                Phase Progress
+              </span>
+              <span className="font-mono text-[10px]" style={{ color: 'var(--axt-gold-bright)' }}>
+                {completed}/{phase.courses.length} · {pct}%
+              </span>
+            </div>
+            <div className="h-[2px] w-full" style={{ background: 'var(--axt-divider)' }}>
+              <div className="h-full transition-all duration-500" style={{ width: `${pct}%`, background: 'var(--axt-gold)' }} />
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[2px] reveal-target"
           style={{ background: 'var(--axt-ghost-border)' }}>
-          {phase.courses.map((course, i) => (
-            <CourseCard key={i} course={course} />
-          ))}
+          {phase.courses.map((course) => {
+            const id = courseIdFor(phase.number, course);
+            return (
+              <CourseCard
+                key={id}
+                course={course}
+                courseId={id}
+                phaseNumber={phase.number}
+                estimatedHours={ESTIMATED_HOURS_PER_COURSE}
+                initialStatus={statusMap[id] ?? "not_started"}
+                initialBookmarked={bookmarkSet.has(id)}
+                initialHasCert={certSet.has(id)}
+                initialNotes={notesMap[id] ?? ""}
+                onStatusChange={onStatusChange}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
@@ -170,8 +199,66 @@ const PhaseSection = ({ phase, index }: { phase: Phase; index: number }) => {
 };
 
 const HannaPath = () => {
-  const { session, loading } = useAuth();
+  const { session, loading, user } = useAuth();
   const heroRef = useReveal();
+
+  const [statusMap, setStatusMap] = useState<Record<string, CourseStatus>>({});
+  const [bookmarkSet, setBookmarkSet] = useState<Set<string>>(new Set());
+  const [certSet, setCertSet] = useState<Set<string>>(new Set());
+  const [notesMap, setNotesMap] = useState<Record<string, string>>({});
+  const [lastActivity, setLastActivity] = useState<Date | null>(null);
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const [progress, bookmarks, certs, notes] = await Promise.all([
+        supabase.from("course_progress").select("course_id,status,updated_at").eq("user_id", user.id),
+        supabase.from("course_bookmarks").select("course_id").eq("user_id", user.id),
+        supabase.from("course_certificates").select("course_id").eq("user_id", user.id),
+        supabase.from("course_notes").select("course_id,notes").eq("user_id", user.id),
+      ]);
+      const sMap: Record<string, CourseStatus> = {};
+      let latest: Date | null = null;
+      const days = new Set<string>();
+      (progress.data ?? []).forEach((r) => {
+        sMap[r.course_id] = r.status;
+        const d = new Date(r.updated_at);
+        if (!latest || d > latest) latest = d;
+        days.add(d.toISOString().slice(0, 10));
+      });
+      setStatusMap(sMap);
+      setLastActivity(latest);
+      // Streak: consecutive days backwards from today
+      let s = 0;
+      const cursor = new Date();
+      while (days.has(cursor.toISOString().slice(0, 10))) { s += 1; cursor.setDate(cursor.getDate() - 1); }
+      setStreak(s);
+      setBookmarkSet(new Set((bookmarks.data ?? []).map((b) => b.course_id)));
+      setCertSet(new Set((certs.data ?? []).map((c) => c.course_id)));
+      const nMap: Record<string, string> = {};
+      (notes.data ?? []).forEach((n) => { nMap[n.course_id] = n.notes; });
+      setNotesMap(nMap);
+    })();
+  }, [user]);
+
+  const onStatusChange = (id: string, status: CourseStatus) => {
+    setStatusMap((prev) => ({ ...prev, [id]: status }));
+    setLastActivity(new Date());
+  };
+
+  const totals = useMemo(() => {
+    const totalCourses = phases.reduce((sum, p) => sum + p.courses.length, 0);
+    let completed = 0;
+    let inProgress = 0;
+    phases.forEach((p) => p.courses.forEach((c) => {
+      const st = statusMap[courseIdFor(p.number, c)];
+      if (st === "completed") completed += 1;
+      if (st === "in_progress") inProgress += 1;
+    }));
+    const remaining = totalCourses - completed;
+    return { totalCourses, completed, inProgress, remaining, pct: totalCourses ? Math.round((completed / totalCourses) * 100) : 0 };
+  }, [statusMap]);
 
   if (loading) {
     return (
@@ -185,7 +272,9 @@ const HannaPath = () => {
 
   if (!session) return <Navigate to="/hub" replace />;
 
-  const totalCourses = phases.reduce((sum, p) => sum + p.courses.length, 0);
+  const lastActivityLabel = lastActivity
+    ? lastActivity.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+    : "—";
 
   return (
     <Layout>
@@ -206,19 +295,35 @@ const HannaPath = () => {
             </p>
           </div>
 
+          {/* Overall progress bar */}
+          <div className="mt-12 reveal-target max-w-3xl">
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-mono text-[10px] uppercase tracking-[0.5em]" style={{ color: 'var(--axt-gold)' }}>
+                Overall Progress
+              </span>
+              <span className="font-display text-2xl" style={{ color: 'var(--axt-gold-bright)' }}>
+                {totals.completed}/{totals.totalCourses} · {totals.pct}%
+              </span>
+            </div>
+            <div className="h-1 w-full" style={{ background: 'var(--axt-divider)' }}>
+              <div className="h-full transition-all duration-500" style={{ width: `${totals.pct}%`, background: 'var(--axt-gold)' }} />
+            </div>
+          </div>
+
           {/* Stats Bar */}
           <div
-            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-[2px] reveal-target"
+            className="mt-10 grid grid-cols-2 md:grid-cols-5 gap-[2px] reveal-target"
             style={{ background: 'var(--axt-ghost-border)' }}
           >
             {[
-              { value: "8", label: "Phases" },
-              { value: `${totalCourses}`, label: "Courses" },
-              { value: "8", label: "Months" },
-              { value: "£0", label: "Total Cost" },
+              { value: `${totals.completed}`, label: "Completed" },
+              { value: `${totals.inProgress}`, label: "In Progress" },
+              { value: `${totals.remaining * ESTIMATED_HOURS_PER_COURSE}h`, label: "Est. Remaining" },
+              { value: `${streak}`, label: "Day Streak" },
+              { value: lastActivityLabel, label: "Last Activity" },
             ].map((stat) => (
               <div key={stat.label} className="p-6 md:p-8 text-center" style={{ background: 'var(--axt-carbon)' }}>
-                <span className="font-display text-4xl md:text-5xl block mb-2" style={{ color: 'var(--axt-gold-bright)' }}>
+                <span className="font-display text-2xl md:text-3xl block mb-2" style={{ color: 'var(--axt-gold-bright)' }}>
                   {stat.value}
                 </span>
                 <span className="font-mono text-[9px] uppercase tracking-[0.5em]" style={{ color: 'var(--axt-text-faint)' }}>
@@ -232,7 +337,16 @@ const HannaPath = () => {
 
       {/* Phases */}
       {phases.map((phase, index) => (
-        <PhaseSection key={phase.number} phase={phase} index={index} />
+        <PhaseSection
+          key={phase.number}
+          phase={phase}
+          index={index}
+          statusMap={statusMap}
+          bookmarkSet={bookmarkSet}
+          certSet={certSet}
+          notesMap={notesMap}
+          onStatusChange={onStatusChange}
+        />
       ))}
 
       {/* Back to Hub */}
