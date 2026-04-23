@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import Seo from "@/components/Seo";
+import { useTranslation } from "react-i18next";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";
@@ -73,6 +74,7 @@ const engagementModels = [
 ];
 
 const Services = () => {
+  const { t } = useTranslation();
   const heroRef = useReveal();
   const catRefs = [useReveal(), useReveal(), useReveal()];
   const industriesRef = useReveal();
@@ -91,14 +93,14 @@ const Services = () => {
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <span className="reveal-target font-mono text-[9px] uppercase tracking-[0.5em] block mb-6" style={{ color: 'var(--axt-gold)' }}>
-            What We Do
+            {t("services.eyebrow")}
           </span>
           <h1 className="reveal-target font-display text-5xl md:text-7xl lg:text-8xl leading-none mb-6">
-            Engineered<br />
-            <span style={{ color: 'var(--axt-gold)' }}>Solutions</span>
+            {t("services.headline_a")}<br />
+            <span style={{ color: 'var(--axt-gold)' }}>{t("services.headline_b")}</span>
           </h1>
           <p className="reveal-target font-editorial text-xl md:text-2xl max-w-2xl" style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}>
-            Three disciplines, one mandate — to build systems that hold under pressure and scale with ambition.
+            {t("services.intro")}
           </p>
         </div>
       </section>
