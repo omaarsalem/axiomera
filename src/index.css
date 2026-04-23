@@ -82,6 +82,33 @@
     line-height: 0.95;
     letter-spacing: 0.02em;
   }
+
+  /* Arabic typography + RTL adjustments */
+  html[lang="ar"] body {
+    font-family: 'IBM Plex Sans Arabic', 'DM Mono', monospace;
+  }
+  html[lang="ar"] h1,
+  html[lang="ar"] h2,
+  html[lang="ar"] h3,
+  html[lang="ar"] h4,
+  html[lang="ar"] h5,
+  html[lang="ar"] h6 {
+    font-family: 'Noto Kufi Arabic', 'Bebas Neue', sans-serif;
+    letter-spacing: 0;
+    line-height: 1.15;
+  }
+  html[dir="rtl"] .font-mono,
+  html[dir="rtl"] [class*="tracking-"] {
+    letter-spacing: 0.05em;
+  }
+  html[lang="ar"] .font-editorial,
+  html[lang="ar"] .editorial {
+    font-family: 'IBM Plex Sans Arabic', serif;
+    font-style: normal;
+  }
+  html[dir="rtl"] .ticker-track {
+    animation-direction: reverse;
+  }
 }
 
 /* Skip-to-content link (WCAG 2.4.1) */
