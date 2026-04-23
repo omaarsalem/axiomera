@@ -226,6 +226,22 @@ const HubDashboard = () => {
             </div>
           )}
 
+          {/* Resume where you left off */}
+          {resumeCourse && (
+            <Link
+              to="/hub/hanna"
+              className="block p-6 mb-12 reveal-target transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
+              style={{ background: 'var(--axt-carbon)', border: '1px solid var(--axt-gold)', borderLeft: '3px solid var(--axt-gold-bright)' }}
+            >
+              <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>
+                Resume where you left off · Phase {resumeCourse.phase_number}
+              </span>
+              <h3 className="font-display text-2xl tracking-wider" style={{ color: 'var(--axt-ivory)' }}>
+                Continue your learning path →
+              </h3>
+            </Link>
+          )}
+
           {/* Learning Path Cards */}
           <div className="mb-8 reveal-target">
             <h2 className="font-display text-3xl tracking-wider mb-8" style={{ color: 'var(--axt-ivory)' }}>
