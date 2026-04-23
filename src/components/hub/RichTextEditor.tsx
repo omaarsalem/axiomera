@@ -30,7 +30,7 @@ const RichTextEditor = ({ value, onChange, placeholder }: Props) => {
   // Keep editor in sync if value changes from outside (e.g. loading a draft)
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value || "", false);
+      editor.commands.setContent(value || "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, editor === null]);
