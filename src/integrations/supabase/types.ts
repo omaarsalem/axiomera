@@ -14,40 +14,79 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_activity_log: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string
+          created_at: string
+          details: Json | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id: string
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string
+          created_at?: string
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_name: string
           content: string
+          cover_image_url: string | null
           created_at: string
           excerpt: string | null
           id: string
           published: boolean
           published_at: string | null
           slug: string
+          status: string
           title: string
           updated_at: string
         }
         Insert: {
           author_name?: string
           content: string
+          cover_image_url?: string | null
           created_at?: string
           excerpt?: string | null
           id?: string
           published?: boolean
           published_at?: string | null
           slug: string
+          status?: string
           title: string
           updated_at?: string
         }
         Update: {
           author_name?: string
           content?: string
+          cover_image_url?: string | null
           created_at?: string
           excerpt?: string | null
           id?: string
           published?: boolean
           published_at?: string | null
           slug?: string
+          status?: string
           title?: string
           updated_at?: string
         }
@@ -55,28 +94,34 @@ export type Database = {
       }
       career_interests: {
         Row: {
+          admin_notes: string | null
           created_at: string
           email: string
           id: string
           message: string | null
           name: string
           role_interest: string | null
+          status: string
         }
         Insert: {
+          admin_notes?: string | null
           created_at?: string
           email: string
           id?: string
           message?: string | null
           name: string
           role_interest?: string | null
+          status?: string
         }
         Update: {
+          admin_notes?: string | null
           created_at?: string
           email?: string
           id?: string
           message?: string | null
           name?: string
           role_interest?: string | null
+          status?: string
         }
         Relationships: []
       }
@@ -202,28 +247,34 @@ export type Database = {
       }
       enquiries: {
         Row: {
+          admin_notes: string | null
           created_at: string
           email: string
           id: string
           message: string
           name: string
           organisation: string | null
+          status: string
         }
         Insert: {
+          admin_notes?: string | null
           created_at?: string
           email: string
           id?: string
           message: string
           name: string
           organisation?: string | null
+          status?: string
         }
         Update: {
+          admin_notes?: string | null
           created_at?: string
           email?: string
           id?: string
           message?: string
           name?: string
           organisation?: string | null
+          status?: string
         }
         Relationships: []
       }
