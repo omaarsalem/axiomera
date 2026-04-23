@@ -5,6 +5,7 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 import { useState, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import useReveal from "@/hooks/useReveal";
+import { useTranslation } from "react-i18next";
 
 const SECTORS = ["Financial Services", "Healthcare", "Government", "Energy & Utilities", "Education", "Retail / E-Commerce", "Other"];
 const SERVICES = ["AXT Infrastructure", "AXT Cyber", "AXT Governance", "Not sure yet"];
