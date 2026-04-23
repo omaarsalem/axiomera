@@ -23,8 +23,33 @@ import ResetPassword from "./pages/ResetPassword.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { AuthProvider } from "./contexts/AuthContext";
 import RouteTransition from "./components/RouteTransition";
+import { LanguageProvider } from "./i18n/LanguageProvider";
 
 const queryClient = new QueryClient();
+
+// All app routes — rendered both at root and under /:lang prefix.
+const AppRoutes = () => (
+  <Routes>
+    <Route path="/" element={<Index />} />
+    <Route path="/services" element={<Services />} />
+    <Route path="/fellowship" element={<Fellowship />} />
+    <Route path="/contact" element={<Contact />} />
+    <Route path="/work" element={<Work />} />
+    <Route path="/about" element={<About />} />
+    <Route path="/faq" element={<FAQ />} />
+    <Route path="/careers" element={<Careers />} />
+    <Route path="/insights" element={<Insights />} />
+    <Route path="/insights/:slug" element={<InsightPost />} />
+    <Route path="/hub" element={<Hub />} />
+    <Route path="/hub/paths" element={<Paths />} />
+    <Route path="/hub/paths/:slug" element={<LearningPath />} />
+    <Route path="/hub/hanna" element={<HannaPath />} />
+    <Route path="/hub/profile" element={<HubProfile />} />
+    <Route path="/hub/admin" element={<HubAdmin />} />
+    <Route path="/reset-password" element={<ResetPassword />} />
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -34,26 +59,24 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <RouteTransition>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/fellowship" element={<Fellowship />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/work" element={<Work />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/insights" element={<Insights />} />
-            <Route path="/insights/:slug" element={<InsightPost />} />
-            <Route path="/hub" element={<Hub />} />
-            <Route path="/hub/paths" element={<Paths />} />
-            <Route path="/hub/paths/:slug" element={<LearningPath />} />
-            <Route path="/hub/hanna" element={<HannaPath />} />
-            <Route path="/hub/profile" element={<HubProfile />} />
-            <Route path="/hub/admin" element={<HubAdmin />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+            <Routes>
+              <Route
+                path="/:lang(ar|en)/*"
+                element={
+                  <LanguageProvider>
+                    <AppRoutes />
+                  </LanguageProvider>
+                }
+              />
+              <Route
+                path="/*"
+                element={
+                  <LanguageProvider>
+                    <AppRoutes />
+                  </LanguageProvider>
+                }
+              />
+            </Routes>
           </RouteTransition>
         </AuthProvider>
       </BrowserRouter>
