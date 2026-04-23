@@ -1,0 +1,63 @@
+{
+  "common": {
+    "brand": "AXT",
+    "brand_full": "Axiomera Technologies",
+    "cta_brief": "Brief Us",
+    "cta_services": "Our Services",
+    "cta_contact": "Get in Touch",
+    "scroll": "Scroll",
+    "language": "Language"
+  },
+  "nav": {
+    "services": "Services",
+    "work": "Work",
+    "about": "About",
+    "fellowship": "Fellowship",
+    "insights": "Insights",
+    "hub": "Hub",
+    "menu": "Menu"
+  },
+  "footer": {
+    "tagline": "Built to be your only call.",
+    "rights": "All rights reserved.",
+    "company": "Company",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "home": {
+    "eyebrow": "AXT",
+    "subEyebrow": "IT · Cybersecurity · Governance",
+    "headline_a": "Where Decisions",
+    "headline_b": "End.",
+    "tagline": "\"Built to be your only call.\"",
+    "section_who": "Who We Are",
+    "who_title_a": "One Firm.",
+    "who_title_b": "Total Confidence.",
+    "section_what": "What We Do",
+    "what_title_a": "Three Pillars.",
+    "what_title_b": "One Standard."
+  },
+  "services": {
+    "eyebrow": "Services",
+    "headline_a": "Three Pillars.",
+    "headline_b": "Total Coverage.",
+    "intro": "Each pillar is led by senior practitioners and delivered end-to-end. No hand-offs. No gaps."
+  },
+  "fellowship": {
+    "eyebrow": "AXT Fellowship",
+    "headline_a": "Where Careers",
+    "headline_b": "Begin.",
+    "intro": "Five fellows. Real client work. Senior mentorship. Free, always."
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "headline_a": "Make The",
+    "headline_b": "Call.",
+    "intro": "Brief us on your IT, cyber, or governance challenge. We respond within one business day."
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "headline_a": "Questions.",
+    "headline_b": "Answered."
+  }
+}
