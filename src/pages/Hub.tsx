@@ -270,6 +270,7 @@ const HubDashboard = () => {
 
   return (
     <Layout>
+      <Seo title="Fellowship Hub" description="The AXT Fellowship Hub — your private learning portal." path="/hub" noIndex />
       <section ref={heroRef} className="min-h-screen px-6 md:px-12 py-24 md:py-32" style={{ background: "var(--axt-void)" }}>
         <div className="max-w-[1400px] mx-auto">
           {!emailVerified && (

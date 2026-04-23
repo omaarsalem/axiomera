@@ -90,6 +90,7 @@ const Paths = () => {
 
   return (
     <Layout>
+      <Seo title="Learning Paths" description="Curated learning paths for AXT Fellows." path="/hub/paths" noIndex />
       <section ref={heroRef} className="px-6 md:px-12 pt-24 pb-16 md:pt-32 md:pb-24" style={{ background: "var(--axt-void)" }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="flex items-center justify-between mb-12 flex-wrap gap-4">
