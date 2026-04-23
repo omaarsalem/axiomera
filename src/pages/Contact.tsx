@@ -1,38 +1,65 @@
 import Layout from "@/components/Layout";
 import SectionLabel from "@/components/SectionLabel";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { useState, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import useReveal from "@/hooks/useReveal";
 
+const SECTORS = ["Financial Services", "Healthcare", "Government", "Energy & Utilities", "Education", "Retail / E-Commerce", "Other"];
+const SERVICES = ["AXT Infrastructure", "AXT Cyber", "AXT Governance", "Not sure yet"];
+const BUDGETS = ["Under £25k", "£25k – £100k", "£100k – £500k", "£500k+", "To be discussed"];
+const TIMELINES = ["Immediate (this month)", "1–3 months", "3–6 months", "Exploratory"];
+
+type FormState = {
+  sector: string;
+  service_interest: string;
+  budget_range: string;
+  timeline: string;
+  name: string;
+  email: string;
+  phone: string;
+  org: string;
+  message: string;
+};
+
+const initial: FormState = {
+  sector: "", service_interest: "", budget_range: "", timeline: "",
+  name: "", email: "", phone: "", org: "", message: "",
+};
+
 const Contact = () => {
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState<FormState>(initial);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const heroRef = useReveal();
   const formRef = useReveal();
+  const newsRef = useReveal();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const update = <K extends keyof FormState>(k: K, v: FormState[K]) => setData((d) => ({ ...d, [k]: v }));
+
+  const canAdvance =
+    (step === 1 && data.sector && data.service_interest) ||
+    (step === 2 && data.budget_range && data.timeline) ||
+    (step === 3 && data.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim()) && data.message.trim());
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!canAdvance) return;
     setSubmitting(true);
     setError(null);
 
-    const formData = new FormData(e.currentTarget);
-    const name = (formData.get("name") as string).trim();
-    const email = (formData.get("email") as string).trim();
-    const org = (formData.get("org") as string).trim();
-    const message = (formData.get("message") as string).trim();
-
-    if (!name || !email || !message) {
-      setError("Please fill in all required fields.");
-      setSubmitting(false);
-      return;
-    }
-
     const { error: dbError } = await supabase.from("enquiries").insert({
-      name,
-      email,
-      organisation: org || null,
-      message,
+      name: data.name.trim(),
+      email: data.email.trim(),
+      organisation: data.org.trim() || null,
+      phone: data.phone.trim() || null,
+      message: data.message.trim(),
+      sector: data.sector,
+      service_interest: data.service_interest,
+      budget_range: data.budget_range,
+      timeline: data.timeline,
     });
 
     if (dbError) {
@@ -40,7 +67,6 @@ const Contact = () => {
       setSubmitting(false);
       return;
     }
-
     setSubmitted(true);
     setSubmitting(false);
   };
@@ -52,9 +78,24 @@ const Contact = () => {
     borderRadius: 0,
   };
 
+  const Choice = ({ value, current, onSelect, label }: { value: string; current: string; onSelect: (v: string) => void; label: string }) => (
+    <button
+      type="button"
+      onClick={() => onSelect(value)}
+      className="text-left p-4 font-mono text-xs transition-all duration-200"
+      style={{
+        background: current === value ? 'var(--axt-gold-subtle)' : 'var(--axt-void)',
+        border: `1px solid ${current === value ? 'var(--axt-gold)' : 'var(--axt-divider)'}`,
+        color: current === value ? 'var(--axt-ivory)' : 'var(--axt-text-dim)',
+        borderRadius: 0,
+      }}
+    >
+      {label}
+    </button>
+  );
+
   return (
     <Layout>
-      {/* Hero */}
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <span className="reveal-target font-mono text-[9px] uppercase tracking-[0.5em] block mb-6" style={{ color: 'var(--axt-gold)' }}>
@@ -65,76 +106,163 @@ const Contact = () => {
             <span style={{ color: 'var(--axt-gold)' }}>Talk.</span>
           </h1>
           <p className="reveal-target font-editorial text-xl md:text-2xl max-w-xl" style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}>
-            Every engagement starts with a conversation. Tell us what you're building, protecting, or transforming.
+            Three quick questions, then your brief. We'll respond within 48 hours.
           </p>
         </div>
       </section>
 
-      {/* Form + Offices */}
       <section ref={formRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-obsidian)' }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target">
             <SectionLabel number="01" label="Enquiry" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-            {/* Form */}
             <div className="reveal-target">
               {submitted ? (
                 <div className="p-12" style={{ border: '1px solid var(--axt-divider)' }}>
-                  <h3 className="font-display text-3xl mb-4" style={{ color: 'var(--axt-gold)' }}>
-                    Received.
-                  </h3>
+                  <h3 className="font-display text-3xl mb-4" style={{ color: 'var(--axt-gold)' }}>Received.</h3>
                   <p className="font-mono text-xs leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>
-                    We'll be in touch within 48 hours. Our team reviews every enquiry personally.
+                    A senior practitioner will be in touch within 48 hours. Every enquiry is reviewed personally.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {[
-                    { label: "Full Name", name: "name", type: "text" },
-                    { label: "Email Address", name: "email", type: "email" },
-                    { label: "Organisation", name: "org", type: "text" },
-                  ].map((field) => (
-                    <div key={field.name}>
-                      <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
-                        {field.label}
-                      </label>
-                      <input
-                        type={field.type}
-                        name={field.name}
-                        required={field.name !== "org"}
-                        className="w-full font-mono text-sm p-4 outline-none transition-all duration-200"
-                        style={inputStyle}
-                        onFocus={(e) => e.currentTarget.style.borderColor = 'var(--axt-gold)'}
-                        onBlur={(e) => e.currentTarget.style.borderColor = 'var(--axt-divider)'}
-                      />
-                    </div>
-                  ))}
-                  <div>
-                    <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
-                      How Can We Help?
-                    </label>
-                    <textarea
-                      name="message"
-                      rows={5}
-                      required
-                      className="w-full font-mono text-sm p-4 outline-none resize-none transition-all duration-200"
-                      style={inputStyle}
-                      onFocus={(e) => e.currentTarget.style.borderColor = 'var(--axt-gold)'}
-                      onBlur={(e) => e.currentTarget.style.borderColor = 'var(--axt-divider)'}
-                    />
+                <>
+                  {/* Step indicator */}
+                  <div className="flex items-center gap-2 mb-10">
+                    {[1, 2, 3].map((s) => (
+                      <div key={s} className="flex-1 flex items-center gap-2">
+                        <span
+                          className="font-mono text-[10px] uppercase tracking-[0.3em] w-8 h-8 flex items-center justify-center"
+                          style={{
+                            background: step >= s ? 'var(--axt-gold)' : 'transparent',
+                            color: step >= s ? 'var(--axt-void)' : 'var(--axt-text-faint)',
+                            border: `1px solid ${step >= s ? 'var(--axt-gold)' : 'var(--axt-divider)'}`,
+                          }}
+                        >
+                          0{s}
+                        </span>
+                        {s < 3 && <div className="flex-1 h-px" style={{ background: step > s ? 'var(--axt-gold)' : 'var(--axt-divider)' }} />}
+                      </div>
+                    ))}
                   </div>
-                  {error && (
-                    <p className="font-mono text-xs" style={{ color: '#e74c3c' }}>{error}</p>
-                  )}
-                  <button type="submit" className="btn-axt btn-axt-gold" disabled={submitting}>
-                    {submitting ? "Sending..." : "Send Enquiry"}
-                  </button>
-                </form>
+
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    {step === 1 && (
+                      <>
+                        <div>
+                          <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
+                            Your Sector
+                          </label>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {SECTORS.map((s) => <Choice key={s} value={s} current={data.sector} onSelect={(v) => update("sector", v)} label={s} />)}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
+                            Service Interest
+                          </label>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {SERVICES.map((s) => <Choice key={s} value={s} current={data.service_interest} onSelect={(v) => update("service_interest", v)} label={s} />)}
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {step === 2 && (
+                      <>
+                        <div>
+                          <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
+                            Indicative Budget
+                          </label>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {BUDGETS.map((s) => <Choice key={s} value={s} current={data.budget_range} onSelect={(v) => update("budget_range", v)} label={s} />)}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
+                            Timeline
+                          </label>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {TIMELINES.map((s) => <Choice key={s} value={s} current={data.timeline} onSelect={(v) => update("timeline", v)} label={s} />)}
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {step === 3 && (
+                      <>
+                        {([
+                          { label: "Full Name *", k: "name", type: "text" },
+                          { label: "Email *", k: "email", type: "email" },
+                          { label: "Phone (optional)", k: "phone", type: "tel" },
+                          { label: "Organisation", k: "org", type: "text" },
+                        ] as const).map((f) => (
+                          <div key={f.k}>
+                            <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-3" style={{ color: 'var(--axt-gold)' }}>{f.label}</label>
+                            <input
+                              type={f.type}
+                              value={data[f.k]}
+                              onChange={(e) => update(f.k, e.target.value)}
+                              maxLength={255}
+                              className="w-full font-mono text-sm p-4 outline-none transition-all duration-200"
+                              style={inputStyle}
+                              onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--axt-gold)')}
+                              onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--axt-divider)')}
+                            />
+                          </div>
+                        ))}
+                        <div>
+                          <label className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
+                            Tell us more *
+                          </label>
+                          <textarea
+                            value={data.message}
+                            onChange={(e) => update("message", e.target.value)}
+                            rows={5}
+                            maxLength={2000}
+                            className="w-full font-mono text-sm p-4 outline-none resize-none transition-all duration-200"
+                            style={inputStyle}
+                            onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--axt-gold)')}
+                            onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--axt-divider)')}
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    {error && <p className="font-mono text-xs" style={{ color: '#e74c3c' }}>{error}</p>}
+
+                    <div className="flex flex-wrap gap-3 pt-4">
+                      {step > 1 && (
+                        <button type="button" onClick={() => setStep(step - 1)} className="btn-axt btn-axt-ghost">
+                          ← Back
+                        </button>
+                      )}
+                      {step < 3 ? (
+                        <button
+                          type="button"
+                          onClick={() => canAdvance && setStep(step + 1)}
+                          disabled={!canAdvance}
+                          className="btn-axt btn-axt-gold"
+                          style={{ opacity: canAdvance ? 1 : 0.4, cursor: canAdvance ? 'pointer' : 'not-allowed' }}
+                        >
+                          Continue →
+                        </button>
+                      ) : (
+                        <button
+                          type="submit"
+                          disabled={submitting || !canAdvance}
+                          className="btn-axt btn-axt-gold"
+                          style={{ opacity: canAdvance && !submitting ? 1 : 0.4 }}
+                        >
+                          {submitting ? "Sending..." : "Send Brief"}
+                        </button>
+                      )}
+                    </div>
+                  </form>
+                </>
               )}
             </div>
 
-            {/* Offices */}
             <div className="reveal-target">
               <div className="space-y-8">
                 {[
@@ -150,6 +278,18 @@ const Contact = () => {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section ref={newsRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-carbon)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="02" label="Stay Informed" />
+          </div>
+          <div className="reveal-target">
+            <NewsletterSignup source="contact-page" />
           </div>
         </div>
       </section>
