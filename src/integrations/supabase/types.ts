@@ -80,6 +80,90 @@ export type Database = {
         }
         Relationships: []
       }
+      course_bookmarks: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          phase_number: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          phase_number: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          phase_number?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      course_certificates: {
+        Row: {
+          course_id: string
+          file_name: string
+          file_path: string
+          id: string
+          phase_number: string
+          uploaded_at: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          file_name: string
+          file_path: string
+          id?: string
+          phase_number: string
+          uploaded_at?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          phase_number?: string
+          uploaded_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      course_notes: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          notes: string
+          phase_number: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          notes?: string
+          phase_number: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          notes?: string
+          phase_number?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       course_progress: {
         Row: {
           completed_at: string | null
