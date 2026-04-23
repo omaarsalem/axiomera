@@ -311,33 +311,48 @@ export type Database = {
       enquiries: {
         Row: {
           admin_notes: string | null
+          budget_range: string | null
           created_at: string
           email: string
           id: string
           message: string
           name: string
           organisation: string | null
+          phone: string | null
+          sector: string | null
+          service_interest: string | null
           status: string
+          timeline: string | null
         }
         Insert: {
           admin_notes?: string | null
+          budget_range?: string | null
           created_at?: string
           email: string
           id?: string
           message: string
           name: string
           organisation?: string | null
+          phone?: string | null
+          sector?: string | null
+          service_interest?: string | null
           status?: string
+          timeline?: string | null
         }
         Update: {
           admin_notes?: string | null
+          budget_range?: string | null
           created_at?: string
           email?: string
           id?: string
           message?: string
           name?: string
           organisation?: string | null
+          phone?: string | null
+          sector?: string | null
+          service_interest?: string | null
           status?: string
+          timeline?: string | null
         }
         Relationships: []
       }
@@ -415,6 +430,30 @@ export type Database = {
           subtitle?: string | null
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          source: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          source?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          source?: string | null
+          status?: string
         }
         Relationships: []
       }
