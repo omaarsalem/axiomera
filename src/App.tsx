@@ -16,6 +16,7 @@ import About from "./pages/About.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Careers from "./pages/Careers.tsx";
 import Insights from "./pages/Insights.tsx";
+import InsightPost from "./pages/InsightPost.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/insights" element={<Insights />} />
+            <Route path="/insights/:slug" element={<InsightPost />} />
             <Route path="/hub" element={<Hub />} />
             <Route path="/hub/hanna" element={<HannaPath />} />
             <Route path="/hub/profile" element={<HubProfile />} />
