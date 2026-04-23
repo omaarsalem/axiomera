@@ -29,6 +29,7 @@ const initial: FormState = {
 };
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FormState>(initial);
   const [submitted, setSubmitted] = useState(false);
@@ -105,14 +106,14 @@ const Contact = () => {
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <span className="reveal-target font-mono text-[9px] uppercase tracking-[0.5em] block mb-6" style={{ color: 'var(--axt-gold)' }}>
-            Contact
+            {t("contact.eyebrow")}
           </span>
           <h1 className="reveal-target font-display text-5xl md:text-7xl lg:text-8xl leading-none mb-6">
-            Let's<br />
-            <span style={{ color: 'var(--axt-gold)' }}>Talk.</span>
+            {t("contact.headline_a")}<br />
+            <span style={{ color: 'var(--axt-gold)' }}>{t("contact.headline_b")}</span>
           </h1>
           <p className="reveal-target font-editorial text-xl md:text-2xl max-w-xl" style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}>
-            Three quick questions, then your brief. We'll respond within 48 hours.
+            {t("contact.intro")}
           </p>
         </div>
       </section>
