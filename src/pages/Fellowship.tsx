@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";

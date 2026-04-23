@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import MagneticButton from "@/components/MagneticButton";
+import Seo from "@/components/Seo";
 
 const tickerItems = [
   "AXT Infrastructure",
@@ -108,6 +109,20 @@ const Index = () => {
 
   return (
     <Layout>
+      <Seo
+        title="AXT — IT Infrastructure, Cybersecurity & Governance"
+        description="Axiomera Technologies — senior-led IT infrastructure, cybersecurity, and governance consulting across Cairo, Leeds, and London. Built to be your only call."
+        path="/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          name: "Axiomera Technologies",
+          alternateName: "AXT",
+          url: "https://axt.tech",
+          areaServed: ["Cairo", "Leeds", "London"],
+          serviceType: ["IT Infrastructure", "Cybersecurity", "Governance Consulting"],
+        }}
+      />
       {/* ── Hero ── */}
       <section
         ref={heroRef}
