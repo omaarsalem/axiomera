@@ -3,8 +3,10 @@ import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";
+import { useTranslation } from "react-i18next";
 
 const Fellowship = () => {
+  const { t } = useTranslation();
   const heroRef = useReveal();
   const whatRef = useReveal();
   const tracksRef = useReveal();
@@ -22,14 +24,14 @@ const Fellowship = () => {
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <span className="reveal-target font-mono text-[9px] uppercase tracking-[0.5em] block mb-6" style={{ color: 'var(--axt-gold)' }}>
-            AXT Fellowship Programme
+            {t("fellowship.eyebrow")}
           </span>
           <h1 className="reveal-target font-display text-5xl md:text-7xl lg:text-8xl leading-none mb-6">
-            Build Real<br />
-            <span style={{ color: 'var(--axt-gold)' }}>Systems.</span>
+            {t("fellowship.headline_a")}<br />
+            <span style={{ color: 'var(--axt-gold)' }}>{t("fellowship.headline_b")}</span>
           </h1>
           <p className="reveal-target font-editorial text-xl md:text-2xl max-w-2xl" style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}>
-            A selective, zero-cost programme for students and recent graduates to work on live infrastructure and security projects alongside senior engineers.
+            {t("fellowship.intro")}
           </p>
         </div>
       </section>

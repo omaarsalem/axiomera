@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import Seo from "@/components/Seo";
+import { useTranslation } from "react-i18next";
 import SectionLabel from "@/components/SectionLabel";
 import { Link } from "react-router-dom";
 import useReveal from "@/hooks/useReveal";
@@ -110,6 +111,7 @@ const AccordionItem = ({ q, a }: { q: string; a: string }) => {
 };
 
 const FAQ = () => {
+  const { t } = useTranslation();
   const heroRef = useReveal();
   const sectionRefs = faqSections.map(() => useReveal());
   const ctaRef = useReveal();
@@ -138,11 +140,11 @@ const FAQ = () => {
       <section ref={heroRef} className="px-6 md:px-12 py-[120px] md:py-[160px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <span className="reveal-target font-mono text-[9px] uppercase tracking-[0.5em] block mb-6" style={{ color: 'var(--axt-gold)' }}>
-            FAQ
+            {t("faq.eyebrow")}
           </span>
           <h1 className="reveal-target font-display text-5xl md:text-7xl lg:text-8xl leading-none mb-6">
-            Common<br />
-            <span style={{ color: 'var(--axt-gold)' }}>Questions.</span>
+            {t("faq.headline_a")}<br />
+            <span style={{ color: 'var(--axt-gold)' }}>{t("faq.headline_b")}</span>
           </h1>
           <p className="reveal-target font-editorial text-xl md:text-2xl max-w-2xl" style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}>
             Everything you need to know about working with AXT — our services, the Fellowship, and how we operate.

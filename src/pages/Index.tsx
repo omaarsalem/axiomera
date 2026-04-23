@@ -6,6 +6,8 @@ import useReveal from "@/hooks/useReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import MagneticButton from "@/components/MagneticButton";
 import Seo from "@/components/Seo";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/LanguageProvider";
 
 const tickerItems = [
   "AXT Infrastructure",
@@ -99,6 +101,8 @@ const fellowshipStats = [
 ];
 
 const Index = () => {
+  const { t } = useTranslation();
+  const lp = useLocalePath();
   const heroRef = useReveal();
   const aboutRef = useReveal();
   const servicesRef = useReveal();
@@ -132,34 +136,34 @@ const Index = () => {
         <div className="max-w-[1400px] mx-auto w-full py-32 md:py-0">
           <div className="reveal-target reveal">
             <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-text-dim)' }}>
-              AXT
+              {t("home.eyebrow")}
             </span>
             <span className="font-mono text-[9px] uppercase tracking-[0.4em] block mb-8" style={{ color: 'var(--axt-text-faint)' }}>
-              IT · Cybersecurity · Governance
+              {t("home.subEyebrow")}
             </span>
           </div>
           <h1 className="reveal-target reveal reveal-delay-1 font-display text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] leading-none mb-6">
-            Where Decisions<br />
-            <span style={{ color: 'var(--axt-gold)' }}>End.</span>
+            {t("home.headline_a")}<br />
+            <span style={{ color: 'var(--axt-gold)' }}>{t("home.headline_b")}</span>
           </h1>
           <p
             className="reveal-target reveal reveal-delay-2 font-editorial text-xl md:text-2xl max-w-xl mb-12"
             style={{ color: 'var(--axt-text-dim)', lineHeight: '1.5' }}
           >
-            "Built to be your only call."
+            {t("home.tagline")}
           </p>
           <div className="reveal-target reveal reveal-delay-3 flex flex-wrap gap-4">
-            <MagneticButton to="/services" className="btn-axt btn-axt-gold inline-block">
-              Our Services
+            <MagneticButton to={lp("/services")} className="btn-axt btn-axt-gold inline-block">
+              {t("common.cta_services")}
             </MagneticButton>
-            <MagneticButton to="/contact" className="btn-axt btn-axt-ghost inline-block">
-              Brief Us
+            <MagneticButton to={lp("/contact")} className="btn-axt btn-axt-ghost inline-block">
+              {t("common.cta_brief")}
             </MagneticButton>
           </div>
         </div>
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 reveal-target reveal reveal-delay-4">
-          <span className="font-mono text-[9px] uppercase tracking-[0.5em]" style={{ color: 'var(--axt-text-faint)' }}>Scroll</span>
+          <span className="font-mono text-[9px] uppercase tracking-[0.5em]" style={{ color: 'var(--axt-text-faint)' }}>{t("common.scroll")}</span>
           <div className="w-px h-8" style={{ background: 'var(--axt-divider)' }} />
         </div>
       </section>
