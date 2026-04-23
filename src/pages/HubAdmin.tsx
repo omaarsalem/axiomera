@@ -238,6 +238,9 @@ const HubAdmin = () => {
             />
           )}
 
+          {/* PATHS */}
+          {tab === "paths" && <PathsAdmin />}
+
           {/* ENQUIRIES */}
           {tab === "enquiries" && (
             <div>
