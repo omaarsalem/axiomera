@@ -1,0 +1,10 @@
+/* TEAM */
+Firm: Axiomera Technologies (AXT)
+Contact: hello [at] axt.tech
+Location: Cairo · Leeds · London
+
+/* SITE */
+Standards: HTML5, CSS3
+Components: React, Vite, Tailwind
+Backend: Lovable Cloud
+Languages: English, Arabic
