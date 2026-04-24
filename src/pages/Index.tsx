@@ -23,7 +23,7 @@ const tickerItems = [
 
 const stats = [
   { value: "3", label: "Service Pillars" },
-  { value: "3", label: "Markets" },
+  { value: "2", label: "Markets" },
   { value: "1", label: "Philosophy" },
   { value: "∞", label: "Commitment" },
 ];
