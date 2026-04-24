@@ -1,0 +1,10 @@
+Contact: mailto:security@axt.tech
+Contact: mailto:hello@axt.tech
+Expires: 2027-01-01T00:00:00.000Z
+Preferred-Languages: en, ar
+Canonical: https://axt.tech/.well-known/security.txt
+Policy: https://axt.tech/security-policy
+
+# AXT — Axiomera Technologies
+# Responsible disclosure: please report vulnerabilities privately to the
+# contacts above. We aim to acknowledge within 72 hours.
