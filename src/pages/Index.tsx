@@ -114,8 +114,8 @@ const Index = () => {
   return (
     <Layout>
       <Seo
-        title="AXT — IT Infrastructure, Cybersecurity & Governance"
-        description="Axiomera Technologies — senior-led IT infrastructure, cybersecurity, and governance consulting across Cairo, Leeds, and London. Built to be your only call."
+        title="AXT — IT Infrastructure, Cybersecurity & Governance | SME & Enterprise UK"
+        description="Axiomera Technologies — senior-led SME cybersecurity UK, virtual SOC Leeds, and IT governance UK. Infrastructure, cyber, and governance under one roof. Cairo · Leeds · London."
         path="/"
         jsonLd={{
           "@context": "https://schema.org",
