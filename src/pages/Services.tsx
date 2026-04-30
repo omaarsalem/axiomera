@@ -73,6 +73,43 @@ const engagementModels = [
   },
 ];
 
+const tiers = [
+  {
+    eyebrow: "01 — For UK SMEs",
+    name: "Community Essentials",
+    tagline: "Affordable security for small businesses.",
+    desc: "A pragmatic package built for UK small and medium businesses who need credible cyber protection without enterprise overhead. Reduced rates because protecting small business is how we strengthen UK digital resilience.",
+    features: [
+      "Essentials Cyber Pack — endpoint, email, identity",
+      "Baseline hardening & policy templates",
+      "Quarterly review with a senior practitioner",
+      "Cyber Essentials readiness support",
+      "Plain-English incident playbook",
+    ],
+    price: "From £POA",
+    priceNote: "Scoped to your business",
+    cta: "Book Free Security Check",
+    ctaHref: "/contact?service=essentials",
+  },
+  {
+    eyebrow: "02 — For Institutions",
+    name: "Enterprise Premium",
+    tagline: "Full-spectrum coverage. Senior-led.",
+    desc: "End-to-end infrastructure, cyber, and governance for enterprises and regulated institutions. Bespoke scope, senior delivery, and the AXT standard from first call to final handover.",
+    features: [
+      "Full SOC, threat intel & 24/7 incident response",
+      "ISO 27001 / SOC 2 / NCSC-aligned programmes",
+      "Fractional CISO & board-level reporting",
+      "Network, cloud, and DR architecture",
+      "Multi-jurisdiction compliance (UK · EG · MENA)",
+    ],
+    price: "Bespoke",
+    priceNote: "Discovery call required",
+    cta: "Brief Us",
+    ctaHref: "/contact?service=enterprise",
+  },
+];
+
 const Services = () => {
   const { t } = useTranslation();
   const heroRef = useReveal();
@@ -80,6 +117,8 @@ const Services = () => {
   const industriesRef = useReveal();
   const methodologyRef = useReveal();
   const modelsRef = useReveal();
+  const tiersRef = useReveal();
+  const caseRef = useReveal();
   const ctaRef = useReveal();
 
   return (
