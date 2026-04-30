@@ -433,6 +433,7 @@ const Index = () => {
 
       {/* ── Testimonials ── */}
       <section
+        ref={testimonialsRef}
         className="px-6 md:px-12 py-[80px] md:py-[120px]"
         style={{ background: 'var(--axt-void)' }}
       >
