@@ -73,6 +73,43 @@ const engagementModels = [
   },
 ];
 
+const tiers = [
+  {
+    eyebrow: "01 — For UK SMEs",
+    name: "Community Essentials",
+    tagline: "Affordable security for small businesses.",
+    desc: "A pragmatic package built for UK small and medium businesses who need credible cyber protection without enterprise overhead. Reduced rates because protecting small business is how we strengthen UK digital resilience.",
+    features: [
+      "Essentials Cyber Pack — endpoint, email, identity",
+      "Baseline hardening & policy templates",
+      "Quarterly review with a senior practitioner",
+      "Cyber Essentials readiness support",
+      "Plain-English incident playbook",
+    ],
+    price: "From £POA",
+    priceNote: "Scoped to your business",
+    cta: "Book Free Security Check",
+    ctaHref: "/contact?service=essentials",
+  },
+  {
+    eyebrow: "02 — For Institutions",
+    name: "Enterprise Premium",
+    tagline: "Full-spectrum coverage. Senior-led.",
+    desc: "End-to-end infrastructure, cyber, and governance for enterprises and regulated institutions. Bespoke scope, senior delivery, and the AXT standard from first call to final handover.",
+    features: [
+      "Full SOC, threat intel & 24/7 incident response",
+      "ISO 27001 / SOC 2 / NCSC-aligned programmes",
+      "Fractional CISO & board-level reporting",
+      "Network, cloud, and DR architecture",
+      "Multi-jurisdiction compliance (UK · EG · MENA)",
+    ],
+    price: "Bespoke",
+    priceNote: "Discovery call required",
+    cta: "Brief Us",
+    ctaHref: "/contact?service=enterprise",
+  },
+];
+
 const Services = () => {
   const { t } = useTranslation();
   const heroRef = useReveal();
@@ -80,13 +117,15 @@ const Services = () => {
   const industriesRef = useReveal();
   const methodologyRef = useReveal();
   const modelsRef = useReveal();
+  const tiersRef = useReveal();
+  const caseRef = useReveal();
   const ctaRef = useReveal();
 
   return (
     <Layout>
       <Seo
-        title="Services — Infrastructure, Cyber, Governance"
-        description="AXT delivers IT infrastructure, cybersecurity, and governance under one roof. Senior-led engagement models: project, retainer, fractional CISO."
+        title="Services — SME Cybersecurity UK · Virtual SOC Leeds · IT Governance UK"
+        description="AXT delivers infrastructure, cybersecurity, and governance under one roof. Community Essentials for UK SMEs and Enterprise Premium for institutions. Virtual SOC, ISO 27001, IT governance UK."
         path="/services"
       />
       {/* Hero */}
@@ -217,6 +256,84 @@ const Services = () => {
                 </ul>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dual-Tier Pricing */}
+      <section ref={tiersRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="07" label="Pricing Tiers" />
+          </div>
+          <h2 className="reveal-target font-display text-4xl md:text-6xl mb-4">
+            Two Tiers.<br /><span style={{ color: 'var(--axt-gold)' }}>One Standard.</span>
+          </h2>
+          <p className="reveal-target font-mono text-xs leading-relaxed max-w-2xl mb-16" style={{ color: 'var(--axt-text-dim)' }}>
+            Whether you're a UK SME protecting your shop or an enterprise running national infrastructure, the standard of work is identical. Only the scope changes.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: 'var(--axt-divider)' }}>
+            {tiers.map((tier) => (
+              <div key={tier.name} className="reveal-target p-8 md:p-12 flex flex-col" style={{ background: 'var(--axt-void)' }}>
+                <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4" style={{ color: 'var(--axt-gold)' }}>
+                  {tier.eyebrow}
+                </span>
+                <h3 className="font-display text-4xl md:text-5xl mb-3" style={{ color: 'var(--axt-ivory)' }}>{tier.name}</h3>
+                <p className="font-editorial text-lg mb-6" style={{ color: 'var(--axt-text-dim)', lineHeight: 1.4 }}>
+                  "{tier.tagline}"
+                </p>
+                <p className="font-mono text-xs leading-relaxed mb-8" style={{ color: 'var(--axt-text-dim)' }}>
+                  {tier.desc}
+                </p>
+                <ul className="space-y-3 mb-10 flex-1">
+                  {tier.features.map((f) => (
+                    <li key={f} className="font-mono text-[11px] flex items-start gap-3" style={{ color: 'var(--axt-text-dim)' }}>
+                      <span style={{ color: 'var(--axt-gold)' }}>—</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-6 mb-8" style={{ borderTop: '1px solid var(--axt-divider)' }}>
+                  <span className="font-display text-3xl block" style={{ color: 'var(--axt-gold-bright)' }}>{tier.price}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.3em]" style={{ color: 'var(--axt-text-faint)' }}>{tier.priceNote}</span>
+                </div>
+                <Link to={tier.ctaHref} className="btn-axt btn-axt-gold text-center">
+                  {tier.cta}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Case Scenario */}
+      <section ref={caseRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-obsidian)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="08" label="Illustrative Scenario" />
+          </div>
+          <div className="reveal-target grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div>
+              <h2 className="font-display text-4xl md:text-5xl mb-4">
+                Ransomware<br /><span style={{ color: 'var(--axt-gold)' }}>Contained.</span>
+              </h2>
+              <span className="font-mono text-[9px] uppercase tracking-[0.4em] block" style={{ color: 'var(--axt-text-faint)' }}>
+                Anonymised · For illustration
+              </span>
+            </div>
+            <div className="lg:col-span-2">
+              <p className="font-editorial text-xl md:text-2xl mb-6" style={{ color: 'var(--axt-ivory)', lineHeight: 1.4 }}>
+                "How AXT Essentials protected a Leeds retailer from ransomware in 72 hours."
+              </p>
+              <p className="font-mono text-xs leading-relaxed mb-4" style={{ color: 'var(--axt-text-dim)' }}>
+                A 14-staff Leeds retailer detected unusual file activity on a Friday afternoon. Their Essentials package routed the alert directly to an AXT senior on-call. Within two hours: lateral movement halted, affected endpoints isolated, clean backups verified.
+              </p>
+              <p className="font-mono text-xs leading-relaxed mb-8" style={{ color: 'var(--axt-text-dim)' }}>
+                By Monday morning the shop opened on time. No ransom paid. No customer data exfiltrated. A board-ready post-incident report delivered Tuesday. This is what the Community Essentials tier is built for.
+              </p>
+              <Link to="/contact?service=security-check" className="btn-axt btn-axt-ghost inline-block">
+                Could this be you? Book a check →
+              </Link>
+            </div>
           </div>
         </div>
       </section>

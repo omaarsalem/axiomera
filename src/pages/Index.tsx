@@ -114,8 +114,8 @@ const Index = () => {
   return (
     <Layout>
       <Seo
-        title="AXT — IT Infrastructure, Cybersecurity & Governance"
-        description="Axiomera Technologies — senior-led IT infrastructure, cybersecurity, and governance consulting across Cairo, Leeds, and London. Built to be your only call."
+        title="AXT — IT Infrastructure, Cybersecurity & Governance | SME & Enterprise UK"
+        description="Axiomera Technologies — senior-led SME cybersecurity UK, virtual SOC Leeds, and IT governance UK. Infrastructure, cyber, and governance under one roof. Cairo · Leeds · London."
         path="/"
         jsonLd={{
           "@context": "https://schema.org",
@@ -153,11 +153,11 @@ const Index = () => {
             {t("home.tagline")}
           </p>
           <div className="reveal-target reveal reveal-delay-3 flex flex-wrap gap-4">
-            <MagneticButton to={lp("/services")} className="btn-axt btn-axt-gold inline-block">
-              {t("common.cta_services")}
+            <MagneticButton to={lp("/contact?service=security-check")} className="btn-axt btn-axt-gold inline-block">
+              Free 15-Min Security Check
             </MagneticButton>
-            <MagneticButton to={lp("/contact")} className="btn-axt btn-axt-ghost inline-block">
-              {t("common.cta_brief")}
+            <MagneticButton to={lp("/services")} className="btn-axt btn-axt-ghost inline-block">
+              {t("common.cta_services")}
             </MagneticButton>
           </div>
         </div>
@@ -360,6 +360,74 @@ const Index = () => {
         </div>
       </section>
 
+      {/* ── 04 Community Impact ── */}
+      <section className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <div className="reveal-target">
+            <SectionLabel number="04" label="Community Impact" />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+            <div>
+              <h2 className="reveal-target font-display text-5xl md:text-7xl mb-6">
+                Giving Back to<br />
+                <span style={{ color: 'var(--axt-gold)' }}>UK Society.</span>
+              </h2>
+              <p className="reveal-target font-mono text-xs leading-relaxed mb-6" style={{ color: 'var(--axt-text-dim)' }}>
+                AXT was founded on the conviction that good cybersecurity should not be a luxury reserved for enterprises. Through our <strong style={{ color: 'var(--axt-ivory)' }}>Community Essentials</strong> programme, UK SMEs receive senior-led security at reduced rates — because the high-street shop, the family clinic, and the local accountant deserve the same standard of defence as the FTSE 250.
+              </p>
+              <p className="reveal-target font-mono text-xs leading-relaxed mb-8" style={{ color: 'var(--axt-text-dim)' }}>
+                Protecting small business is how a country protects itself. Every SME we harden is one less foothold for the attackers targeting UK supply chains.
+              </p>
+              <div className="reveal-target flex flex-wrap gap-4">
+                <Link to="/services" className="btn-axt btn-axt-gold">
+                  See SME Pricing
+                </Link>
+                <Link to="/contact?service=security-check" className="btn-axt btn-axt-ghost">
+                  Free Security Check
+                </Link>
+              </div>
+            </div>
+            <div>
+              <div className="reveal-target grid grid-cols-3 gap-px" style={{ background: 'var(--axt-divider)' }}>
+                {[
+                  { value: "SME", label: "First Tier Built For" },
+                  { value: "UK", label: "Society We Serve" },
+                  { value: "100%", label: "Senior-Led" },
+                ].map((s) => (
+                  <div key={s.label} className="p-6 text-center" style={{ background: 'var(--axt-void)' }}>
+                    <span className="font-display text-3xl md:text-4xl block mb-2" style={{ color: 'var(--axt-gold-bright)' }}>{s.value}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--axt-text-dim)' }}>{s.label}</span>
+                  </div>
+                ))}
+              </div>
+              <blockquote
+                className="reveal-target font-editorial text-xl md:text-2xl mt-8"
+                style={{ color: 'var(--axt-text-dim)', lineHeight: 1.4 }}
+              >
+                "AXT was built to give back to the society that taught me so much."
+              </blockquote>
+              <span className="reveal-target font-mono text-[10px] uppercase tracking-[0.35em] block mt-4" style={{ color: 'var(--axt-text-faint)' }}>
+                — Omar Salem, Founder
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Trust Signals Strip ── */}
+      <section className="px-6 md:px-12 py-10" style={{ background: 'var(--axt-obsidian)', borderTop: '1px solid var(--axt-divider)', borderBottom: '1px solid var(--axt-divider)' }}>
+        <div className="max-w-[1400px] mx-auto">
+          <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4 text-center" style={{ color: 'var(--axt-text-faint)' }}>
+            Aligned With
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {["GDPR", "ISO 27001", "Cyber Essentials", "NCSC Guidance", "SOC 2"].map((mark) => (
+              <span key={mark} className="font-mono text-[11px] uppercase tracking-[0.4em]" style={{ color: 'var(--axt-text-dim)' }}>{mark}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Testimonials ── */}
       <section
         className="px-6 md:px-12 py-[80px] md:py-[120px]"
@@ -367,7 +435,7 @@ const Index = () => {
       >
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target">
-            <SectionLabel number="04" label="Client Voices" />
+            <SectionLabel number="05" label="Client Voices" />
           </div>
           <h2 className="reveal-target font-display text-5xl md:text-7xl mb-16">
             What Clients<br />
@@ -477,7 +545,7 @@ const Index = () => {
       >
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target mb-8">
-            <SectionLabel number="04" label="Work With Us" />
+            <SectionLabel number="06" label="Work With Us" />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
@@ -493,20 +561,20 @@ const Index = () => {
                 "The last firm you'll ever need to call is one conversation away."
               </p>
               <div className="reveal-target flex flex-wrap gap-4">
-                <Link to="/contact" className="btn-axt btn-axt-gold">
-                  Start a Brief
+                <Link to="/contact?service=security-check" className="btn-axt btn-axt-gold">
+                  Book Free Security Check
                 </Link>
-                <Link to="/services" className="btn-axt btn-axt-ghost">
-                  View Services
+                <Link to="/contact" className="btn-axt btn-axt-ghost">
+                  Brief Us
                 </Link>
               </div>
             </div>
 
             <div className="reveal-target space-y-6">
               {[
-                { label: "Email", value: "hello@axt.tech" },
+                { label: "Email", value: "hello@axiomera.technology" },
                 { label: "Markets", value: "Cairo · Leeds · London" },
-                { label: "Domain", value: "axt.tech" },
+                { label: "Response", value: "Within 1 business day" },
               ].map((item) => (
                 <div key={item.label} className="py-4" style={{ borderBottom: '1px solid var(--axt-divider)' }}>
                   <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>

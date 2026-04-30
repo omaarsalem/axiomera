@@ -31,28 +31,16 @@ const values = [
   },
 ];
 
-const team = [
-  {
-    name: "Ahmed Khalil",
-    role: "Founder & Managing Director",
-    bio: "UK-educated cybersecurity specialist with 12+ years across enterprise security architecture, incident response, and governance consulting. Former security lead at a FTSE 250 firm.",
-  },
-  {
-    name: "Sarah Mitchell",
-    role: "Head of Infrastructure",
-    bio: "Cisco-certified network architect with deep experience in SD-WAN, data centre design, and cloud migration. Led infrastructure modernisation for three government ministries.",
-  },
-  {
-    name: "Omar Farouk",
-    role: "Head of Governance & Compliance",
-    bio: "ISO 27001 Lead Auditor and GDPR specialist. Guided 20+ organisations through certification, including healthcare, finance, and government sectors.",
-  },
-  {
-    name: "James Hartley",
-    role: "Head of Cyber Operations",
-    bio: "Former SOC manager with experience building threat intelligence programmes from the ground up. OSCP, CISSP, and CISM certified.",
-  },
-];
+const founder = {
+  name: "Omar Salem",
+  role: "Founder & Managing Director",
+  origin: "UK-Educated · Cairo-Based · Internationally Minded",
+  story: "AXT was built to give back to the society that taught me so much.",
+  bio: [
+    "Omar founded Axiomera Technologies after a decade working across UK and MENA enterprise IT — from infrastructure architecture to cybersecurity programmes for regulated institutions. UK-educated and Cairo-based, he saw the same gap in both markets: clients juggling four vendors when they needed one trusted firm.",
+    "AXT is the answer. A single firm where senior practitioners take engagements from first call to final handover — and where UK SMEs receive the same standard as enterprises through the Community Essentials programme.",
+  ],
+};
 
 const About = () => {
   const heroRef = useReveal();
@@ -109,30 +97,54 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Founder */}
       <section ref={teamRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target">
-            <SectionLabel number="02" label="Leadership" />
+            <SectionLabel number="02" label="The Founder" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[2px]" style={{ background: 'var(--axt-ghost-border)' }}>
-            {team.map((member) => (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px" style={{ background: 'var(--axt-divider)' }}>
+            {/* Portrait placeholder */}
+            <div
+              className="reveal-target p-12 flex flex-col items-center justify-center text-center"
+              style={{ background: 'var(--axt-obsidian)', minHeight: '320px' }}
+            >
               <div
-                key={member.name}
-                className="reveal-target p-8 md:p-12 transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
-                style={{ background: 'var(--axt-void)' }}
+                className="flex items-center justify-center mb-6"
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  border: '1px solid var(--axt-gold)',
+                  background: 'var(--axt-void)',
+                }}
               >
-                <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
-                  {member.role}
-                </span>
-                <h3 className="font-display text-3xl tracking-wider mb-4" style={{ color: 'var(--axt-ivory)' }}>
-                  {member.name}
-                </h3>
-                <p className="font-mono text-xs leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>
-                  {member.bio}
-                </p>
+                <span className="font-display text-6xl" style={{ color: 'var(--axt-gold)' }}>OS</span>
               </div>
-            ))}
+              <span className="font-mono text-[9px] uppercase tracking-[0.4em]" style={{ color: 'var(--axt-text-faint)' }}>
+                Portrait — TBC
+              </span>
+            </div>
+
+            {/* Bio */}
+            <div className="reveal-target lg:col-span-2 p-8 md:p-12" style={{ background: 'var(--axt-void)' }}>
+              <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
+                {founder.role}
+              </span>
+              <h3 className="font-display text-5xl md:text-6xl tracking-wider mb-3" style={{ color: 'var(--axt-ivory)' }}>
+                {founder.name}
+              </h3>
+              <span className="font-mono text-[10px] uppercase tracking-[0.35em] block mb-8" style={{ color: 'var(--axt-text-dim)' }}>
+                {founder.origin}
+              </span>
+              <blockquote className="font-editorial text-xl md:text-2xl mb-8 pl-6" style={{ color: 'var(--axt-ivory)', borderLeft: '2px solid var(--axt-gold)', lineHeight: 1.4 }}>
+                "{founder.story}"
+              </blockquote>
+              {founder.bio.map((p, i) => (
+                <p key={i} className="font-mono text-xs leading-relaxed mb-4" style={{ color: 'var(--axt-text-dim)' }}>
+                  {p}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </section>

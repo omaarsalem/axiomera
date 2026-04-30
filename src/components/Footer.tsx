@@ -66,7 +66,10 @@ const Footer = () => {
             <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4 mt-8" style={{ color: 'var(--axt-gold)' }}>
               {t("footer.contact")}
             </span>
-            <p className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>hello@axt.tech</p>
+            <p className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>hello@axiomera.technology</p>
+            <Link to={lp("/contact?service=security-check")} className="block font-mono text-[10px] uppercase tracking-[0.3em] mt-3 transition-colors" style={{ color: 'var(--axt-gold)' }}>
+              Free 15-Min Security Check →
+            </Link>
           </div>
         </div>
 

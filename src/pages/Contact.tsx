@@ -2,13 +2,14 @@ import Layout from "@/components/Layout";
 import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import NewsletterSignup from "@/components/NewsletterSignup";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import useReveal from "@/hooks/useReveal";
 import { useTranslation } from "react-i18next";
 
-const SECTORS = ["Financial Services", "Healthcare", "Government", "Energy & Utilities", "Education", "Retail / E-Commerce", "Other"];
-const SERVICES = ["AXT Infrastructure", "AXT Cyber", "AXT Governance", "Not sure yet"];
+const SECTORS = ["Financial Services", "Healthcare", "Government", "Energy & Utilities", "Education", "Retail / E-Commerce", "SME / Small Business", "Other"];
+const SERVICES = ["Free 15-Min Security Check", "AXT Infrastructure", "AXT Cyber", "AXT Governance", "Community Essentials (SME)", "Enterprise Premium", "Not sure yet"];
 const BUDGETS = ["Under £25k", "£25k – £100k", "£100k – £500k", "£500k+", "To be discussed"];
 const TIMELINES = ["Immediate (this month)", "1–3 months", "3–6 months", "Exploratory"];
 
@@ -31,6 +32,7 @@ const initial: FormState = {
 
 const Contact = () => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FormState>(initial);
   const [submitted, setSubmitted] = useState(false);
@@ -39,6 +41,18 @@ const Contact = () => {
   const heroRef = useReveal();
   const formRef = useReveal();
   const newsRef = useReveal();
+
+  // Pre-tag enquiry from CTA query param (e.g. ?service=security-check)
+  useEffect(() => {
+    const svc = searchParams.get("service");
+    if (svc === "security-check") {
+      setData((d) => ({ ...d, service_interest: "Free 15-Min Security Check", sector: d.sector || "SME / Small Business" }));
+    } else if (svc === "essentials") {
+      setData((d) => ({ ...d, service_interest: "Community Essentials (SME)", sector: d.sector || "SME / Small Business" }));
+    } else if (svc === "enterprise") {
+      setData((d) => ({ ...d, service_interest: "Enterprise Premium" }));
+    }
+  }, [searchParams]);
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) => setData((d) => ({ ...d, [k]: v }));
 
@@ -273,15 +287,23 @@ const Contact = () => {
 
             <div className="reveal-target">
               <div className="space-y-8">
+                <div className="p-8" style={{ border: '1px solid var(--axt-gold)', background: 'var(--axt-gold-subtle)' }}>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
+                    Direct Line
+                  </span>
+                  <h3 className="font-display text-2xl mb-2" style={{ color: 'var(--axt-ivory)' }}>hello@axiomera.technology</h3>
+                  <p className="font-mono text-xs mt-3" style={{ color: 'var(--axt-text-dim)' }}>
+                    Every enquiry reviewed personally. Response within one business day.
+                  </p>
+                </div>
                 {[
-                  { city: "Cairo", address: "Smart Village, Building B119, 6th of October, Giza", email: "cairo@axiomera.tech" },
-                  { city: "Leeds", address: "Platform, New Station Street, Leeds LS1 4JB", email: "leeds@axiomera.tech" },
-                  { city: "London", address: "30 St Mary Axe, London EC3A 8BF", email: "london@axiomera.tech" },
+                  { city: "Cairo", address: "Smart Village, Building B119, 6th of October, Giza" },
+                  { city: "Leeds", address: "Platform, New Station Street, Leeds LS1 4JB" },
+                  { city: "London", address: "30 St Mary Axe, London EC3A 8BF" },
                 ].map((office) => (
                   <div key={office.city} className="p-8" style={{ border: '1px solid var(--axt-divider)' }}>
                     <h3 className="font-display text-3xl mb-2">{office.city}</h3>
-                    <p className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>{office.address}</p>
-                    <p className="font-mono text-xs" style={{ color: 'var(--axt-gold)' }}>{office.email}</p>
+                    <p className="font-mono text-xs" style={{ color: 'var(--axt-text-dim)' }}>{office.address}</p>
                   </div>
                 ))}
               </div>
