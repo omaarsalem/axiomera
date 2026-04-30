@@ -32,6 +32,7 @@ const initial: FormState = {
 
 const Contact = () => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<FormState>(initial);
   const [submitted, setSubmitted] = useState(false);
@@ -40,6 +41,18 @@ const Contact = () => {
   const heroRef = useReveal();
   const formRef = useReveal();
   const newsRef = useReveal();
+
+  // Pre-tag enquiry from CTA query param (e.g. ?service=security-check)
+  useEffect(() => {
+    const svc = searchParams.get("service");
+    if (svc === "security-check") {
+      setData((d) => ({ ...d, service_interest: "Free 15-Min Security Check", sector: d.sector || "SME / Small Business" }));
+    } else if (svc === "essentials") {
+      setData((d) => ({ ...d, service_interest: "Community Essentials (SME)", sector: d.sector || "SME / Small Business" }));
+    } else if (svc === "enterprise") {
+      setData((d) => ({ ...d, service_interest: "Enterprise Premium" }));
+    }
+  }, [searchParams]);
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) => setData((d) => ({ ...d, [k]: v }));
 
