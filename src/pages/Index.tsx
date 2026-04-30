@@ -493,20 +493,20 @@ const Index = () => {
                 "The last firm you'll ever need to call is one conversation away."
               </p>
               <div className="reveal-target flex flex-wrap gap-4">
-                <Link to="/contact" className="btn-axt btn-axt-gold">
-                  Start a Brief
+                <Link to="/contact?service=security-check" className="btn-axt btn-axt-gold">
+                  Book Free Security Check
                 </Link>
-                <Link to="/services" className="btn-axt btn-axt-ghost">
-                  View Services
+                <Link to="/contact" className="btn-axt btn-axt-ghost">
+                  Brief Us
                 </Link>
               </div>
             </div>
 
             <div className="reveal-target space-y-6">
               {[
-                { label: "Email", value: "hello@axt.tech" },
+                { label: "Email", value: "hello@axiomera.technology" },
                 { label: "Markets", value: "Cairo · Leeds · London" },
-                { label: "Domain", value: "axt.tech" },
+                { label: "Response", value: "Within 1 business day" },
               ].map((item) => (
                 <div key={item.label} className="py-4" style={{ borderBottom: '1px solid var(--axt-divider)' }}>
                   <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-2" style={{ color: 'var(--axt-gold)' }}>
