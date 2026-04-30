@@ -107,6 +107,9 @@ const Index = () => {
   const aboutRef = useReveal();
   const servicesRef = useReveal();
   const whyRef = useReveal();
+  const communityRef = useReveal();
+  const trustRef = useReveal();
+  const testimonialsRef = useReveal();
   const fellowshipRef = useReveal();
   const ctaRef = useReveal();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -361,7 +364,7 @@ const Index = () => {
       </section>
 
       {/* ── 04 Community Impact ── */}
-      <section className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
+      <section ref={communityRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target">
             <SectionLabel number="04" label="Community Impact" />
@@ -415,7 +418,7 @@ const Index = () => {
       </section>
 
       {/* ── Trust Signals Strip ── */}
-      <section className="px-6 md:px-12 py-10" style={{ background: 'var(--axt-obsidian)', borderTop: '1px solid var(--axt-divider)', borderBottom: '1px solid var(--axt-divider)' }}>
+      <section ref={trustRef} className="px-6 md:px-12 py-10" style={{ background: 'var(--axt-obsidian)', borderTop: '1px solid var(--axt-divider)', borderBottom: '1px solid var(--axt-divider)' }}>
         <div className="max-w-[1400px] mx-auto">
           <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4 text-center" style={{ color: 'var(--axt-text-faint)' }}>
             Aligned With
@@ -430,6 +433,7 @@ const Index = () => {
 
       {/* ── Testimonials ── */}
       <section
+        ref={testimonialsRef}
         className="px-6 md:px-12 py-[80px] md:py-[120px]"
         style={{ background: 'var(--axt-void)' }}
       >
