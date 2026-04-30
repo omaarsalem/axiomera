@@ -153,11 +153,11 @@ const Index = () => {
             {t("home.tagline")}
           </p>
           <div className="reveal-target reveal reveal-delay-3 flex flex-wrap gap-4">
-            <MagneticButton to={lp("/services")} className="btn-axt btn-axt-gold inline-block">
-              {t("common.cta_services")}
+            <MagneticButton to={lp("/contact?service=security-check")} className="btn-axt btn-axt-gold inline-block">
+              Free 15-Min Security Check
             </MagneticButton>
-            <MagneticButton to={lp("/contact")} className="btn-axt btn-axt-ghost inline-block">
-              {t("common.cta_brief")}
+            <MagneticButton to={lp("/services")} className="btn-axt btn-axt-ghost inline-block">
+              {t("common.cta_services")}
             </MagneticButton>
           </div>
         </div>
