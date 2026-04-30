@@ -2,13 +2,14 @@ import Layout from "@/components/Layout";
 import Seo from "@/components/Seo";
 import SectionLabel from "@/components/SectionLabel";
 import NewsletterSignup from "@/components/NewsletterSignup";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import useReveal from "@/hooks/useReveal";
 import { useTranslation } from "react-i18next";
 
-const SECTORS = ["Financial Services", "Healthcare", "Government", "Energy & Utilities", "Education", "Retail / E-Commerce", "Other"];
-const SERVICES = ["AXT Infrastructure", "AXT Cyber", "AXT Governance", "Not sure yet"];
+const SECTORS = ["Financial Services", "Healthcare", "Government", "Energy & Utilities", "Education", "Retail / E-Commerce", "SME / Small Business", "Other"];
+const SERVICES = ["Free 15-Min Security Check", "AXT Infrastructure", "AXT Cyber", "AXT Governance", "Community Essentials (SME)", "Enterprise Premium", "Not sure yet"];
 const BUDGETS = ["Under £25k", "£25k – £100k", "£100k – £500k", "£500k+", "To be discussed"];
 const TIMELINES = ["Immediate (this month)", "1–3 months", "3–6 months", "Exploratory"];
 
