@@ -545,7 +545,7 @@ const Index = () => {
       >
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target mb-8">
-            <SectionLabel number="04" label="Work With Us" />
+            <SectionLabel number="06" label="Work With Us" />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
