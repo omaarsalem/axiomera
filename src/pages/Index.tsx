@@ -364,7 +364,7 @@ const Index = () => {
       </section>
 
       {/* ── 04 Community Impact ── */}
-      <section className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
+      <section ref={communityRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target">
             <SectionLabel number="04" label="Community Impact" />
