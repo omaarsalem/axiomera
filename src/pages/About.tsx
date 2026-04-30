@@ -97,30 +97,54 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Founder */}
       <section ref={teamRef} className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target">
-            <SectionLabel number="02" label="Leadership" />
+            <SectionLabel number="02" label="The Founder" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[2px]" style={{ background: 'var(--axt-ghost-border)' }}>
-            {team.map((member) => (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px" style={{ background: 'var(--axt-divider)' }}>
+            {/* Portrait placeholder */}
+            <div
+              className="reveal-target p-12 flex flex-col items-center justify-center text-center"
+              style={{ background: 'var(--axt-obsidian)', minHeight: '320px' }}
+            >
               <div
-                key={member.name}
-                className="reveal-target p-8 md:p-12 transition-colors duration-300 hover:bg-[var(--axt-gold-subtle)]"
-                style={{ background: 'var(--axt-void)' }}
+                className="flex items-center justify-center mb-6"
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  border: '1px solid var(--axt-gold)',
+                  background: 'var(--axt-void)',
+                }}
               >
-                <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
-                  {member.role}
-                </span>
-                <h3 className="font-display text-3xl tracking-wider mb-4" style={{ color: 'var(--axt-ivory)' }}>
-                  {member.name}
-                </h3>
-                <p className="font-mono text-xs leading-relaxed" style={{ color: 'var(--axt-text-dim)' }}>
-                  {member.bio}
-                </p>
+                <span className="font-display text-6xl" style={{ color: 'var(--axt-gold)' }}>OS</span>
               </div>
-            ))}
+              <span className="font-mono text-[9px] uppercase tracking-[0.4em]" style={{ color: 'var(--axt-text-faint)' }}>
+                Portrait — TBC
+              </span>
+            </div>
+
+            {/* Bio */}
+            <div className="reveal-target lg:col-span-2 p-8 md:p-12" style={{ background: 'var(--axt-void)' }}>
+              <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
+                {founder.role}
+              </span>
+              <h3 className="font-display text-5xl md:text-6xl tracking-wider mb-3" style={{ color: 'var(--axt-ivory)' }}>
+                {founder.name}
+              </h3>
+              <span className="font-mono text-[10px] uppercase tracking-[0.35em] block mb-8" style={{ color: 'var(--axt-text-dim)' }}>
+                {founder.origin}
+              </span>
+              <blockquote className="font-editorial text-xl md:text-2xl mb-8 pl-6" style={{ color: 'var(--axt-ivory)', borderLeft: '2px solid var(--axt-gold)', lineHeight: 1.4 }}>
+                "{founder.story}"
+              </blockquote>
+              {founder.bio.map((p, i) => (
+                <p key={i} className="font-mono text-xs leading-relaxed mb-4" style={{ color: 'var(--axt-text-dim)' }}>
+                  {p}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </section>
