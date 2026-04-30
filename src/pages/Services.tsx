@@ -124,8 +124,8 @@ const Services = () => {
   return (
     <Layout>
       <Seo
-        title="Services — Infrastructure, Cyber, Governance"
-        description="AXT delivers IT infrastructure, cybersecurity, and governance under one roof. Senior-led engagement models: project, retainer, fractional CISO."
+        title="Services — SME Cybersecurity UK · Virtual SOC Leeds · IT Governance UK"
+        description="AXT delivers infrastructure, cybersecurity, and governance under one roof. Community Essentials for UK SMEs and Enterprise Premium for institutions. Virtual SOC, ISO 27001, IT governance UK."
         path="/services"
       />
       {/* Hero */}
