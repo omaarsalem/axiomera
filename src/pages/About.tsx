@@ -31,28 +31,16 @@ const values = [
   },
 ];
 
-const team = [
-  {
-    name: "Ahmed Khalil",
-    role: "Founder & Managing Director",
-    bio: "UK-educated cybersecurity specialist with 12+ years across enterprise security architecture, incident response, and governance consulting. Former security lead at a FTSE 250 firm.",
-  },
-  {
-    name: "Sarah Mitchell",
-    role: "Head of Infrastructure",
-    bio: "Cisco-certified network architect with deep experience in SD-WAN, data centre design, and cloud migration. Led infrastructure modernisation for three government ministries.",
-  },
-  {
-    name: "Omar Farouk",
-    role: "Head of Governance & Compliance",
-    bio: "ISO 27001 Lead Auditor and GDPR specialist. Guided 20+ organisations through certification, including healthcare, finance, and government sectors.",
-  },
-  {
-    name: "James Hartley",
-    role: "Head of Cyber Operations",
-    bio: "Former SOC manager with experience building threat intelligence programmes from the ground up. OSCP, CISSP, and CISM certified.",
-  },
-];
+const founder = {
+  name: "Omar Salem",
+  role: "Founder & Managing Director",
+  origin: "UK-Educated · Cairo-Based · Internationally Minded",
+  story: "AXT was built to give back to the society that taught me so much.",
+  bio: [
+    "Omar founded Axiomera Technologies after a decade working across UK and MENA enterprise IT — from infrastructure architecture to cybersecurity programmes for regulated institutions. UK-educated and Cairo-based, he saw the same gap in both markets: clients juggling four vendors when they needed one trusted firm.",
+    "AXT is the answer. A single firm where senior practitioners take engagements from first call to final handover — and where UK SMEs receive the same standard as enterprises through the Community Essentials programme.",
+  ],
+};
 
 const About = () => {
   const heroRef = useReveal();
