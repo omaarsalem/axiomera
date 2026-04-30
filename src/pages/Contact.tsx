@@ -287,15 +287,23 @@ const Contact = () => {
 
             <div className="reveal-target">
               <div className="space-y-8">
+                <div className="p-8" style={{ border: '1px solid var(--axt-gold)', background: 'var(--axt-gold-subtle)' }}>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-3" style={{ color: 'var(--axt-gold)' }}>
+                    Direct Line
+                  </span>
+                  <h3 className="font-display text-2xl mb-2" style={{ color: 'var(--axt-ivory)' }}>hello@axiomera.technology</h3>
+                  <p className="font-mono text-xs mt-3" style={{ color: 'var(--axt-text-dim)' }}>
+                    Every enquiry reviewed personally. Response within one business day.
+                  </p>
+                </div>
                 {[
-                  { city: "Cairo", address: "Smart Village, Building B119, 6th of October, Giza", email: "cairo@axiomera.tech" },
-                  { city: "Leeds", address: "Platform, New Station Street, Leeds LS1 4JB", email: "leeds@axiomera.tech" },
-                  { city: "London", address: "30 St Mary Axe, London EC3A 8BF", email: "london@axiomera.tech" },
+                  { city: "Cairo", address: "Smart Village, Building B119, 6th of October, Giza" },
+                  { city: "Leeds", address: "Platform, New Station Street, Leeds LS1 4JB" },
+                  { city: "London", address: "30 St Mary Axe, London EC3A 8BF" },
                 ].map((office) => (
                   <div key={office.city} className="p-8" style={{ border: '1px solid var(--axt-divider)' }}>
                     <h3 className="font-display text-3xl mb-2">{office.city}</h3>
-                    <p className="font-mono text-xs mb-2" style={{ color: 'var(--axt-text-dim)' }}>{office.address}</p>
-                    <p className="font-mono text-xs" style={{ color: 'var(--axt-gold)' }}>{office.email}</p>
+                    <p className="font-mono text-xs" style={{ color: 'var(--axt-text-dim)' }}>{office.address}</p>
                   </div>
                 ))}
               </div>
