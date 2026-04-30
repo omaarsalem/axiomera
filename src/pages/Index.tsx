@@ -107,6 +107,9 @@ const Index = () => {
   const aboutRef = useReveal();
   const servicesRef = useReveal();
   const whyRef = useReveal();
+  const communityRef = useReveal();
+  const trustRef = useReveal();
+  const testimonialsRef = useReveal();
   const fellowshipRef = useReveal();
   const ctaRef = useReveal();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
