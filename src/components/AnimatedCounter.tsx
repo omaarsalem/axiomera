@@ -26,6 +26,9 @@ const AnimatedCounter = ({ value, duration = 1200, className, style }: Props) =>
       setDisplay(value);
       return;
     }
+    // Don't restart on re-renders if the animation has already begun
+    if (startedRef.current) return;
+
     const target = parseFloat(match![2]);
     const prefix = match![1];
     const suffix = match![3];
@@ -56,7 +59,8 @@ const AnimatedCounter = ({ value, duration = 1200, className, style }: Props) =>
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [value, duration, isNumeric, match]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, duration]);
 
   return (
     <span ref={ref} className={className} style={style}>
