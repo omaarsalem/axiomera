@@ -229,14 +229,23 @@ const About = () => {
       </section>
 
       {/* Trust strip */}
-      <section className="px-6 md:px-12 py-10" style={{ background: 'var(--axt-obsidian)', borderTop: '1px solid var(--axt-divider)', borderBottom: '1px solid var(--axt-divider)' }}>
+      <section id="trust" className="px-6 md:px-12 py-[80px] md:py-[120px] scroll-mt-24" style={{ background: 'var(--axt-obsidian)' }}>
         <div className="max-w-[1400px] mx-auto">
-          <span className="font-mono text-[9px] uppercase tracking-[0.5em] block mb-4 text-center" style={{ color: 'var(--axt-text-faint)' }}>
-            Aligned With
-          </span>
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+          <div className="reveal-target">
+            <SectionLabel number="05" label="Trust & Alignment" />
+          </div>
+          <h2 className="reveal-target font-display text-4xl md:text-6xl mb-4">
+            Aligned With<br />
+            <span style={{ color: 'var(--axt-gold)' }}>The Standards That Matter.</span>
+          </h2>
+          <p className="reveal-target font-mono text-xs leading-relaxed max-w-2xl mb-12" style={{ color: 'var(--axt-text-dim)' }}>
+            Our delivery follows the frameworks our clients are measured against — so the work we do today stands up to the audits they face tomorrow.
+          </p>
+          <div className="reveal-target grid grid-cols-2 md:grid-cols-5 gap-px" style={{ background: 'var(--axt-divider)' }}>
             {["GDPR", "ISO 27001", "Cyber Essentials", "NCSC Guidance", "SOC 2"].map((mark) => (
-              <span key={mark} className="font-mono text-[11px] uppercase tracking-[0.4em]" style={{ color: 'var(--axt-text-dim)' }}>{mark}</span>
+              <div key={mark} className="p-8 text-center" style={{ background: 'var(--axt-obsidian)' }}>
+                <span className="font-mono text-[11px] uppercase tracking-[0.4em]" style={{ color: 'var(--axt-ivory)' }}>{mark}</span>
+              </div>
             ))}
           </div>
         </div>
