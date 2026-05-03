@@ -1,96 +1,84 @@
-# AXT Site — Credibility, Conversion & SME Layer
+## Goal
 
-The current site already covers Hero, Services, Fellowship, and Contact strongly. This plan fills the gaps from your brief: **dual‑tier pricing, community impact, founder credibility (you, Omar), trust signals, and a unified primary CTA** — without touching the brand system (Bebas / Cormorant / DM Mono, gold on void, sharp corners, grain overlay).
+Slim the homepage to a focused, premium landing experience and move the heavier content into dedicated pages. Add a new Testimonials page (none currently exists).
 
----
+## Current homepage sections
 
-## 1. Unify contact identity (site‑wide)
+1. Hero
+2. Gold ticker
+3. Who We Are (with stats + locations)
+4. What We Do (three pillars + full service lists)
+5. Philosophy break
+6. Why AXT (4 cards)
+7. Community Impact (UK SME programme + founder quote)
+8. Trust signals (compliance marks)
+9. Testimonials (3 quotes)
+10. Fellowship teaser
+11. Contact CTA
 
-- Replace `hello@axt.tech` and the per‑city emails (`cairo@axiomera.tech`, `leeds@…`, `london@…`) with a single primary: `**hello@axiomera.technology**`.
-- Add a secondary CTA used on Hero, Services, Contact, and Footer:
-**"Book Your Free 15‑Minute Security Check"** → opens contact form pre‑tagged `service_interest = "Free Security Check"`.
-- Files touched: `Footer.tsx`, `Contact.tsx`, `Index.tsx`, `Services.tsx`, `i18n/locales/en.json` + `ar.json`.
+This is too long and too dense for a landing page.
 
----
+## New homepage (lean, ~5 sections)
 
-## 2. Services page — add **Dual‑Tier Pricing**
+1. **Hero** — keep as-is
+2. **Ticker** — keep
+3. **What We Do** — keep heading + three pillar cards but **remove the per-pillar service bullet lists** (those belong on /services). Each card shows: number, name, tagline, one-line quote, and a "Learn more →" link to /services.
+4. **Philosophy break** — keep (short, high impact)
+5. **Fellowship teaser** — keep (drives second CTA)
+6. **Contact CTA** — keep
 
-New section on `/services` (after Engagement Models), styled as a 2‑column grid (2px gap, void/obsidian backgrounds, gold accents):
+Renumber section labels: 01 What We Do, 02 Fellowship, 03 Work With Us.
 
-```text
-┌──────────────────────────┬──────────────────────────┐
-│  COMMUNITY ESSENTIALS    │  ENTERPRISE PREMIUM      │
-│  For UK SMEs             │  For Institutions        │
-│  ────────────────────    │  ────────────────────    │
-│  · Essentials Cyber Pack │  · Full SOC + IR         │
-│  · Baseline Hardening    │  · ISO 27001 / SOC 2     │
-│  · Quarterly Review      │  · Fractional CISO       │
-│  From £/month            │  Bespoke                 │
-│  [Book Security Check]   │  [Brief Us]              │
-└──────────────────────────┴──────────────────────────┘
-```
+## Content moved off the homepage
 
-Final wording for bullets and price floor will be confirmed with you before publishing (see Q below).
 
----
+| Section                                          | New home                                      |
+| ------------------------------------------------ | --------------------------------------------- |
+| Who We Are (stats, locations, founder narrative) | `/about` (already exists — append/merge)      |
+| Community Impact (SME programme + founder quote) | `/about` (new section)                        |
+| Why AXT (4 differentiator cards)                 | `/about` (new section)                        |
+| Trust signals (GDPR, ISO 27001, etc.)            | `/about` footer strip + `/services` top strip |
+| Testimonials (3 quotes)                          | new `/testimonials` page                      |
+| Pillar service bullet lists                      | already on `/services` — verify               |
 
-## 3. Home page — add **Community Impact** section
 
-New section between *Why AXT* and *Testimonials*:
+## New page: `/testimonials`
 
-- Section label: `04 — Community Impact`
-- Headline: **"Giving Back to UK Society."**
-- Body: short paragraph on Essentials packages for SMEs at reduced cost, and how protecting small businesses strengthens UK digital resilience.
-- Three small stat tiles (e.g. *SMEs Protected · Hours Donated · UK Coverage*) — placeholder values until real metrics exist.
-- CTA: link to the new pricing section on `/services`.
+- Route added in `src/App.tsx`
+- New file `src/pages/Testimonials.tsx`
+- Hero: section label "Client Voices", headline "What Clients / Tell Us."
+- Grid of testimonial cards (start with the existing 3, leave the data array easy to extend)
+- Add a few more placeholder quotes for credibility (clearly attributed by role + sector, no fake company names — keeps with positioning rules)
+- Closing CTA strip linking to /contact
+- Add nav entry "Testimonials" to `Navbar.tsx` (and i18n `en.json` / `ar.json` under `nav.testimonials`)
+- Add link from homepage philosophy break or contact section: small "Read client voices →" link
 
-(Existing section numbering on Home and Testimonials shifts by one.)
+## About page additions
 
----
+Append three sections to `src/pages/About.tsx`:
 
-## 4. About page — replace fictional team with **Founder Credibility**
+- **Why AXT** — the 4 differentiator cards
+- **Community Impact** — UK SME programme block + founder quote
+- **Trust / Aligned With** — compliance marks strip
 
-The current `/about` `team` array contains placeholder names (Ahmed Khalil, Sarah Mitchell, James Hartley). Replace the *Leadership* section with a single **Founder** block centred on you:
+(Will read About.tsx first to integrate cleanly with existing structure and section numbering.)
 
-- Name: **Omar Salem**, Founder & Managing Director
-- Bio framing: UK‑educated, Cairo‑based, internationally minded; story line — *"AXT was built to give back to the society that taught me so much."*
-- Optional headshot slot (placeholder until you supply one).
-- Keep the Values, Timeline, and CTA sections untouched.
+## Files to change
 
----
+- `src/pages/Index.tsx` — remove sections 01 Who We Are, 03 Why AXT, 04 Community Impact, Trust strip, Testimonials; trim pillars cards; renumber labels
+- `src/pages/About.tsx` — append Why AXT, Community Impact, Trust strip
+- `src/pages/Testimonials.tsx` — new
+- `src/App.tsx` — add `/testimonials` route
+- `src/components/Navbar.tsx` — add nav item
+- `src/i18n/locales/en.json` + `ar.json` — add `nav.testimonials`
+- `public/sitemap.xml` — add /testimonials
 
-## 5. Add a **Trust Signals** strip (Home + Services)
+## Out of scope
 
-A thin full‑width strip above the footer:
+- No design-system changes (fonts, colors, spacing all preserved)
+- No backend/database changes
+- Translations beyond the new nav label stay English-only for now (matches current homepage copy pattern)
 
-- Row of monochrome compliance marks: **GDPR · ISO 27001 · Cyber Essentials · NCSC‑aligned** (text‑set in DM Mono with thin gold dividers — no third‑party logos until we have permission to use them).
-- One placeholder testimonial card already exists on Home; add one **case‑style scenario** card on Services:
-*"How AXT Essentials protected a Leeds retailer from ransomware in 72 hours."* (anonymised scenario, clearly framed as illustrative).
+## Open question
 
----
-
-## 6. SEO tune‑up (low‑risk metadata only)
-
-Update `<Seo>` descriptions and `index.html` meta to include the keywords from your brief:
-*"SME cybersecurity UK", "virtual SOC Leeds", "IT governance UK"* — woven naturally into existing copy, no keyword stuffing.
-
----
-
-## Technical notes
-
-- All new sections use existing tokens: `--axt-void`, `--axt-obsidian`, `--axt-gold`, the `font-display` / `font-mono` / `font-editorial` classes, and the `useReveal` scroll‑in hook. No new dependencies.
-- The "Free Security Check" CTA reuses the existing `Contact.tsx` form by passing a query param (`?service=security-check`) and pre‑selecting `service_interest`.
-- No DB migrations required — the `enquiries` table already has `service_interest` as free text.
-- i18n: English copy added now; Arabic strings stubbed with English fallback so nothing breaks on `/ar`. Translations can follow.
-
----
-
-## One question before I build
-
-I need a price floor for **Community Essentials** to display on the pricing tier (e.g. *"From £249/month"*). Options: B
-
-- (a) **Show "From £X/month"** — give me the number and I'll use it.
-- (b) **Show "From £POA"** (Price On Application) — no number on the public site, captured in the security‑check call.
-- (c) **No price at all** — both tiers say *"Bespoke"* and conversion happens via the call.
-
-If you don't want to decide now, I'll default to **(b) — "From £POA"**, which keeps the premium feel and lets you set pricing per client. B
+Want me to also add a small "Read client voices →" link inside the homepage Contact CTA block, or keep the homepage completely free of testimonial references and rely only on the navbar entry? home page completely free of testimonial references and rely only on the navbar entry
