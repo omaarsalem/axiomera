@@ -175,7 +175,7 @@ const About = () => {
       </section>
 
       {/* Community Impact */}
-      <section className="px-6 md:px-12 py-[80px] md:py-[120px]" style={{ background: 'var(--axt-void)' }}>
+      <section id="community-impact" className="px-6 md:px-12 py-[80px] md:py-[120px] scroll-mt-24" style={{ background: 'var(--axt-void)' }}>
         <div className="max-w-[1400px] mx-auto">
           <div className="reveal-target">
             <SectionLabel number="04" label="Community Impact" />
