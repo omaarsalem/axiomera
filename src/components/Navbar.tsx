@@ -18,6 +18,7 @@ const Navbar = () => {
     { label: t("nav.about"), path: "/about" },
     { label: t("nav.fellowship"), path: "/fellowship" },
     { label: t("nav.insights"), path: "/insights" },
+    { label: t("nav.testimonials"), path: "/testimonials" },
   ];
 
   useEffect(() => {
